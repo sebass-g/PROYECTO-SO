@@ -26,13 +26,24 @@ public class List {
         size++;
     }
 
-    // Extraer el primero (Para despacho a CPU o cambio de estado)
+    public void addFirst(PCB pcb) {
+        Node newNode = new Node(pcb);
+        if (head == null) {
+            head = newNode;
+        } else {
+            newNode.next = head;
+            head = newNode;
+        }
+        size++;
+    }
+
+    // Asegúrate de tener este método también para el Scheduler
     public PCB removeFirst() {
         if (head == null) return null;
-        PCB pcb = head.pcb;
+        PCB temp = head.pcb;
         head = head.next;
         size--;
-        return pcb;
+        return temp;
     }
 
     // Inserción ordenada por Deadline (Para política EDF) [cite: 23, 35]

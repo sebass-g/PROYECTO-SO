@@ -1,14 +1,20 @@
 package com.mycompany.proyecto1.sistemasoperativos;
 
-// IMPORTANTE: Importar tus estructuras
 import DataStructures.List;
 import DataStructures.PCB;
 import DataStructures.Clock;
+import DataStructures.Semaphore;
 
 public class Proyecto1SistemasOperativos {
 
-    // 1. Atributos estáticos (deben ser static para usarse en el main)
-    public static final Object syncLock = new Object();
+    // 1. Semáforos independientes para cada recurso compartido
+    public static Semaphore mutexReady = new Semaphore(1);
+    public static Semaphore mutexBlocked = new Semaphore(1);
+    public static Semaphore mutexSuspended = new Semaphore(1);
+    public static Semaphore mutexCPU = new Semaphore(1); 
+    public static Semaphore mutexClock = new Semaphore(1); 
+
+    // Atributos del sistema
     public static int globalClock = 0;
     public static PCB runningProcess = null;
     
@@ -19,34 +25,40 @@ public class Proyecto1SistemasOperativos {
     public static List blockedSuspendedQueue = new List();
     public static List finishedQueue = new List();
 
-    // 2. EL MÉTODO MAIN (Asegúrate de que tenga el String[] args)
     public static void main(String[] args) {
         System.out.println("--- Iniciando UNIMET-Sat RTOS ---");
         
         // Inicializar procesos
         inicializarProcesos();
         
-        // Iniciar el Reloj
-        Clock mainClock = new Clock(1000, syncLock);
+        // Iniciar el Reloj (pasa el semáforo de CPU y Clock)
+        Clock mainClock = new Clock(1000); 
         mainClock.start();
         
-        System.out.println("Reloj en marcha. Ciclo actual: " + globalClock);
+        // Iniciar el Planificador
+        Scheduler scheduler = new Scheduler();
+        scheduler.start();
+        
+        // Iniciar el Generador de Interrupciones (Eventos asíncronos)
+        InterruptGenerator interruptSystem = new InterruptGenerator();
+        interruptSystem.start();
+        
+        System.out.println("Sistemas iniciados correctamente.");
     }
 
-    // 3. Método para cumplir con los 20 procesos iniciales
     public static void inicializarProcesos() {
         for (int i = 1; i <= 20; i++) {
-            // Generar valores aleatorios usando Math.random()
             int inst = 10 + (int)(Math.random() * 21);
             int prio = 1 + (int)(Math.random() * 3);
             int dline = 50 + (int)(Math.random() * 51);
             
             PCB nuevo = new PCB("P" + i, "Mision_" + i, inst, prio, dline, 5, 3);
             
-            synchronized(syncLock) {
-                readyQueue.addLast(nuevo);
-            }
+            // USO DE SEMÁFORO en lugar de synchronized
+            mutexReady.acquire();
+            readyQueue.addLast(nuevo);
+            mutexReady.release();
         }
-        System.out.println("20 procesos aleatorios creados.");
+        System.out.println("20 procesos aleatorios creados y protegidos por semáforo.");
     }
 }

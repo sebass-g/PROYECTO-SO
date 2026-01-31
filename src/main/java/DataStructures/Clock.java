@@ -10,27 +10,29 @@ import com.mycompany.proyecto1.sistemasoperativos.Proyecto1SistemasOperativos;
  *
  * @author Luigi
  */
-
 public class Clock extends Thread {
     private int duration;
     private boolean running;
-    private final Object lock;
 
-    public Clock(int duration, Object lock) {
+    // Constructor simplificado: solo recibe la duración
+    public Clock(int duration) {
         this.duration = duration;
-        this.lock = lock;
         this.running = true;
     }
-    
+
     @Override
     public void run() {
         while (running) {
             try {
                 Thread.sleep(duration);
-                synchronized (lock) {
-                    Proyecto1SistemasOperativos.globalClock++;
-                    executeCycle();
-                }
+                
+                // Usamos los semáforos estáticos de la clase principal
+                Proyecto1SistemasOperativos.mutexClock.acquire();
+                Proyecto1SistemasOperativos.globalClock++;
+                Proyecto1SistemasOperativos.mutexClock.release();
+
+                executeCycle();
+                
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;
@@ -39,6 +41,7 @@ public class Clock extends Thread {
     }
 
     private void executeCycle() {
+        Proyecto1SistemasOperativos.mutexCPU.acquire();
         PCB p = Proyecto1SistemasOperativos.runningProcess;
         if (p != null) {
             p.setPc(p.getPc() + 1);
@@ -48,12 +51,7 @@ public class Clock extends Thread {
             if (p.getDeadline() > 0) {
                 p.setDeadline(p.getDeadline() - 1);
             }
-            
-            if (p.getInstruccionesEjecutadas() >= p.getInstruccionesTotales()) {
-                p.setStatus("Terminado");
-            }
         }
+        Proyecto1SistemasOperativos.mutexCPU.release();
     }
-
-    public void setDuration(int duration) { this.duration = duration; }
 }

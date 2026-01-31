@@ -1,5 +1,8 @@
-DataStructures\Clock.class
 DataStructures\List.class
-DataStructures\PCB.class
+com\mycompany\proyecto1\sistemasoperativos\InterruptGenerator.class
 com\mycompany\proyecto1\sistemasoperativos\Proyecto1SistemasOperativos.class
+DataStructures\Semaphore.class
 DataStructures\Node.class
+DataStructures\Clock.class
+com\mycompany\proyecto1\sistemasoperativos\Scheduler.class
+DataStructures\PCB.class
