@@ -15,29 +15,36 @@ public class PCB {
     private String id;
     private String nombre;
     private String status; // Nuevo, Listo, Ejecución, Bloqueado, etc. 
-    private int pc; // Program Counter [cite: 22, 53]
-    private int mar; // Memory Address Register [cite: 22, 53]
-    private int prioridad; // [cite: 14, 53]
+    private int pc; // Program Counter
+    private int mar; // Memory Address Register 
+    private int prioridad;
     
-    // Atributos de tiempo real y ejecución [cite: 14, 24, 53]
+    // Atributos de tiempo real y ejecución
     private int instruccionesTotales;
     private int instruccionesEjecutadas;
-    private int deadline; // Tiempo límite de finalización [cite: 14, 53]
+    private int deadline; // Tiempo límite de finalización
     private int tiempoLlegada;
     
     // Para manejo de E/S [cite: 49]
     private int ciclosParaExcepcion; 
     private int ciclosParaSatisfacer;
+    
+    private int ciclosParaGenerarExcepcion;
+    private int ciclosParaSatisfacerExcepcion;
 
-    public PCB(String id, String nombre, int instrucciones, int prioridad, int deadline) {
+    public PCB(String id, String nombre, int instrucciones, int prioridad, int deadline, int ciclosEx, int ciclosSat) {
         this.id = id;
         this.nombre = nombre;
         this.instruccionesTotales = instrucciones;
         this.prioridad = prioridad;
         this.deadline = deadline;
+        this.ciclosParaGenerarExcepcion = ciclosEx;
+        this.ciclosParaSatisfacerExcepcion = ciclosSat;
+        
+        // Inicialización por defecto
         this.status = "Nuevo";
         this.pc = 0;
-        this.mar = 0; // Se asume incremento lineal [cite: 67]
+        this.mar = 0;
         this.instruccionesEjecutadas = 0;
     }
     public String getId() {
@@ -135,7 +142,20 @@ public class PCB {
     public void setCiclosParaSatisfacer(int ciclosParaSatisfacer) {
         this.ciclosParaSatisfacer = ciclosParaSatisfacer;
     }
+    
+    public int getCiclosParaGenerarExcepcion() {
+        return ciclosParaGenerarExcepcion;
+    }
+
+    public void setCiclosParaGenerarExcepcion(int ciclosParaGenerarExcepcion) {
+        this.ciclosParaGenerarExcepcion = ciclosParaGenerarExcepcion;
+    }
+    
+    public int getCiclosParaSatisfacerExcepcion() {
+        return ciclosParaSatisfacerExcepcion;
+    }
+
+    public void setCiclosParaSatisfacerExcepcion(int ciclosParaSatisfacerExcepcion) {
+        this.ciclosParaSatisfacerExcepcion = ciclosParaSatisfacerExcepcion;
+    }
 }
-
-
-
