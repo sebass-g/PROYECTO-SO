@@ -5,20 +5,37 @@ import DataStructures.PCB;
 import DataStructures.Clock;
 import DataStructures.Semaphore;
 
+/**
+ *
+ * @author Luigi
+ */
 public class Proyecto1SistemasOperativos {
 
-    // 1. Semáforos independientes para cada recurso compartido
+    // --- SEMÁFOROS ---
     public static Semaphore mutexReady = new Semaphore(1);
     public static Semaphore mutexBlocked = new Semaphore(1);
     public static Semaphore mutexSuspended = new Semaphore(1);
     public static Semaphore mutexCPU = new Semaphore(1); 
     public static Semaphore mutexClock = new Semaphore(1); 
+    
+    // --- VARIABLES GLOBALES PARA ALGORITMOS ---
+    // 1. Enumeración (Debe ser pública)
+    public enum Algoritmo {
+        FCFS, ROUND_ROBIN, SRT, PRIORIDAD, EDF
+    }
+    
+    // 2. Variables de control (Públicas y estáticas para que Scheduler las vea)
+    public static Algoritmo algoritmoActual = Algoritmo.FCFS; 
+    public static int quantum = 2; 
 
-    // Atributos del sistema
+    // 3. REFERENCIA GLOBAL AL SCHEDULER (Esto faltaba para el Dashboard)
+    public static Scheduler scheduler;
+
+    // --- VARIABLES DEL SISTEMA ---
     public static int globalClock = 0;
     public static PCB runningProcess = null;
     
-    // Colas del modelo de 7 estados
+    // --- COLAS ---
     public static List readyQueue = new List();
     public static List blockedQueue = new List();
     public static List readySuspendedQueue = new List();
@@ -31,17 +48,22 @@ public class Proyecto1SistemasOperativos {
         // Inicializar procesos
         inicializarProcesos();
         
-        // Iniciar el Reloj (pasa el semáforo de CPU y Clock)
+        // Iniciar el Reloj
         Clock mainClock = new Clock(1000); 
         mainClock.start();
         
-        // Iniciar el Planificador
-        Scheduler scheduler = new Scheduler();
+        // Iniciar el Planificador (Usando la variable estática)
+        scheduler = new Scheduler(); // <--- OJO: No pongas 'Scheduler scheduler = ...'
         scheduler.start();
         
-        // Iniciar el Generador de Interrupciones (Eventos asíncronos)
+        // Iniciar Interrupciones
         InterruptGenerator interruptSystem = new InterruptGenerator();
         interruptSystem.start();
+        
+        // Iniciar Interfaz Gráfica
+        java.awt.EventQueue.invokeLater(() -> {
+            new Dashboard().setVisible(true);
+        });
         
         System.out.println("Sistemas iniciados correctamente.");
     }
@@ -54,7 +76,6 @@ public class Proyecto1SistemasOperativos {
             
             PCB nuevo = new PCB("P" + i, "Mision_" + i, inst, prio, dline, 5, 3);
             
-            // USO DE SEMÁFORO en lugar de synchronized
             mutexReady.acquire();
             readyQueue.addLast(nuevo);
             mutexReady.release();

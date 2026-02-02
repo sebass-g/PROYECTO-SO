@@ -62,6 +62,62 @@ public class List {
         }
         size++;
     }
+    
+    // Insertar ordenado por Prioridad (Asumiendo 1 = Mayor Prioridad)
+    public void insertByPriority(PCB pcb) {
+        Node newNode = new Node(pcb);
+        // Si la lista está vacía o el nuevo tiene MEJOR prioridad (número menor) que el primero
+        if (head == null || pcb.getPrioridad() < head.pcb.getPrioridad()) {
+            newNode.next = head;
+            head = newNode;
+        } else {
+            Node current = head;
+            // Busca dónde insertar
+            while (current.next != null && current.next.pcb.getPrioridad() <= pcb.getPrioridad()) {
+                current = current.next;
+            }
+            newNode.next = current.next;
+            current.next = newNode;
+        }
+        size++;
+    }
+
+    // Insertar ordenado por Tiempo Restante (SRT)
+    public void insertBySRT(PCB pcb) {
+        Node newNode = new Node(pcb);
+        // SRT: Menor tiempo restante va primero
+        int restanteNuevo = pcb.getInstruccionesTotales() - pcb.getInstruccionesEjecutadas();
+        
+        // Lógica para cabeza
+        if (head == null) {
+            head = newNode;
+        } else {
+            int restanteHead = head.pcb.getInstruccionesTotales() - head.pcb.getInstruccionesEjecutadas();
+            if (restanteNuevo < restanteHead) {
+                newNode.next = head;
+                head = newNode;
+            } else {
+                Node current = head;
+                while (current.next != null) {
+                    int restanteCurrentNext = current.next.pcb.getInstruccionesTotales() - current.next.pcb.getInstruccionesEjecutadas();
+                    if (restanteNuevo < restanteCurrentNext) {
+                        break;
+                    }
+                    current = current.next;
+                }
+                newNode.next = current.next;
+                current.next = newNode;
+            }
+        }
+        size++;
+    }
+    // Método para "espiar" el primer elemento sin sacarlo de la lista
+    public PCB peek() {
+        if (head == null) {
+            return null;
+        }
+        return head.pcb;
+    }
 
     public int getSize() { return size; }
     public boolean isEmpty() { return head == null; }
