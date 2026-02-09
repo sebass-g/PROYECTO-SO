@@ -15,17 +15,49 @@ public class Scheduler extends Thread {
     public void run() {
         while (active) {
             try {
-                Thread.sleep(100); 
+                // 1. Velocidad de la simulación
+                Thread.sleep(200); // 0.2 segundos por ciclo
 
-                // LÓGICA DE ROUND ROBIN
-                // Nota el uso de "Proyecto1SistemasOperativos." antes de las variables
+                
+                // PASO A: SIMULACIÓN DE EJECUCIÓN 
+                
+                Proyecto1SistemasOperativos.mutexCPU.acquire();
+                PCB procesoActual = Proyecto1SistemasOperativos.runningProcess;
+                
+                if (procesoActual != null) {
+                    // Aumentar contador de instrucciones ejecutadas
+                    int ejecutadas = procesoActual.getInstruccionesEjecutadas();
+                    procesoActual.setInstruccionesEjecutadas(ejecutadas + 1);
+                    
+                    // Verificar si el proceso YA TERMINÓ
+                    if (procesoActual.getInstruccionesEjecutadas() >= procesoActual.getInstruccionesTotales()) {
+                        System.out.println(">>> PROCESO TERMINADO: " + procesoActual.getNombre());
+                        
+                        procesoActual.setStatus("Terminado");
+                        
+                        // Guardar en la cola de terminados
+                        Proyecto1SistemasOperativos.finishedQueue.addLast(procesoActual);
+                        
+                        // Liberar el CPU
+                        Proyecto1SistemasOperativos.runningProcess = null;
+                        contadorRR = 0; // Reiniciar contador RR
+                    }
+                }
+                Proyecto1SistemasOperativos.mutexCPU.release();
+                
+
+
+               
+                // PASO B: LÓGICA DE ROUND ROBIN 
+                
                 if (Proyecto1SistemasOperativos.algoritmoActual == Proyecto1SistemasOperativos.Algoritmo.ROUND_ROBIN) {
                     
                     Proyecto1SistemasOperativos.mutexCPU.acquire();
                     if (Proyecto1SistemasOperativos.runningProcess != null) {
                         contadorRR++;
+                        // Si se acabó su tiempo (Quantum)
                         if (contadorRR >= Proyecto1SistemasOperativos.quantum) {
-                            System.out.println("--- Fin de Quantum RR ---");
+                            System.out.println("--- Fin de Quantum RR para " + Proyecto1SistemasOperativos.runningProcess.getNombre() + " ---");
                             
                             PCB procesoSaliente = Proyecto1SistemasOperativos.runningProcess;
                             procesoSaliente.setStatus("Listo");
@@ -41,7 +73,9 @@ public class Scheduler extends Thread {
                     Proyecto1SistemasOperativos.mutexCPU.release();
                 }
 
-                // SI EL CPU ESTÁ LIBRE O HAY QUE EXPROPIAR
+               
+                // PASO C: DESPACHAR O EXPROPIAR 
+          
                 if (Proyecto1SistemasOperativos.runningProcess == null) {
                     despacharProceso();
                 } else {
@@ -56,16 +90,23 @@ public class Scheduler extends Thread {
     }
 
     private void despacharProceso() {
+        // Solo intentamos despachar si hay gente en la cola de listos
+        if (Proyecto1SistemasOperativos.readyQueue.isEmpty()) {
+            return;
+        }
+
         Proyecto1SistemasOperativos.mutexReady.acquire();
         Proyecto1SistemasOperativos.mutexCPU.acquire();
 
-        PCB proximo = Proyecto1SistemasOperativos.readyQueue.removeFirst();
-
-        if (proximo != null) {
-            proximo.setStatus("Ejecución");
-            Proyecto1SistemasOperativos.runningProcess = proximo;
-            contadorRR = 0;
-            System.out.println("[SCHEDULER] Ejecutando: " + proximo.getNombre());
+        // Verificar de nuevo por seguridad
+        if (!Proyecto1SistemasOperativos.readyQueue.isEmpty()) {
+            PCB proximo = Proyecto1SistemasOperativos.readyQueue.removeFirst();
+            if (proximo != null) {
+                proximo.setStatus("Ejecución");
+                Proyecto1SistemasOperativos.runningProcess = proximo;
+                contadorRR = 0;
+                System.out.println("[SCHEDULER] Ejecutando: " + proximo.getNombre());
+            }
         }
 
         Proyecto1SistemasOperativos.mutexCPU.release();
@@ -105,6 +146,10 @@ public class Scheduler extends Thread {
     }
 
     private void verificarPreemcion() {
+        // Esta función puede ser costosa si se llama muy rápido, 
+        // verifica primero si readyQueue tiene algo antes de bloquear mutexes
+        if (Proyecto1SistemasOperativos.readyQueue.isEmpty()) return;
+
         Proyecto1SistemasOperativos.mutexReady.acquire();
         Proyecto1SistemasOperativos.mutexCPU.acquire();
         
@@ -114,7 +159,6 @@ public class Scheduler extends Thread {
         if (running != null && candidato != null) {
             boolean debeCambiar = false;
 
-            // Usamos la referencia completa al ENUM
             switch (Proyecto1SistemasOperativos.algoritmoActual) {
                 case PRIORIDAD:
                     if (candidato.getPrioridad() < running.getPrioridad()) {
@@ -144,7 +188,6 @@ public class Scheduler extends Thread {
                 PCB procesoSaliente = running;
                 Proyecto1SistemasOperativos.runningProcess = null; 
                 
-                // Reinsertamos según el algoritmo actual
                 switch (Proyecto1SistemasOperativos.algoritmoActual) {
                     case PRIORIDAD:
                         Proyecto1SistemasOperativos.readyQueue.insertByPriority(procesoSaliente);

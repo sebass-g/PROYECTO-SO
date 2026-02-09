@@ -121,4 +121,20 @@ public class List {
 
     public int getSize() { return size; }
     public boolean isEmpty() { return head == null; }
+    
+    
+    @Override
+    public String toString() {
+        if (isEmpty()) {
+            return " [Vacía] ";
+        }
+        StringBuilder sb = new StringBuilder();
+        Node auxiliar = head; 
+        while (auxiliar != null) {
+            // Llama al toString() del PCB y agrega un salto de línea
+            sb.append(auxiliar.pcb.toString()).append("\n"); 
+            auxiliar = auxiliar.next;
+        }
+        return sb.toString();
+    }
 }

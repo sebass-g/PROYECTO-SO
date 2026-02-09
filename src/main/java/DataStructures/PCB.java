@@ -158,4 +158,9 @@ public class PCB {
     public void setCiclosParaSatisfacerExcepcion(int ciclosParaSatisfacerExcepcion) {
         this.ciclosParaSatisfacerExcepcion = ciclosParaSatisfacerExcepcion;
     }
+    @Override
+    public String toString() {
+        // Devuelve: "Nombre (ID) - Prioridad: X"
+        return this.nombre + " (ID:" + this.id + ") - P:" + this.prioridad;
+    }
 }

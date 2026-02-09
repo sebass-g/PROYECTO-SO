@@ -3,6 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.proyecto1.sistemasoperativos;
+import DataStructures.PCB;
+import javax.swing.Timer;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,8 +20,17 @@ public class Dashboard extends javax.swing.JFrame {
     /**
      * Creates new form Dashboard
      */
-    public Dashboard() {
+   public Dashboard() {
         initComponents();
+        
+        // Timer: Actualiza la pantalla cada 200ms
+        Timer timer = new Timer(200, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarInformacion();
+            }
+        });
+        timer.start();
     }
 
     /**
@@ -28,44 +42,160 @@ public class Dashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        lblReloj = new javax.swing.JLabel();
+        lblCPU = new javax.swing.JLabel();
+        lblAlgoritmoActual = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtColaListos = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtColaBloqueados = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtTerminados = new javax.swing.JTextArea();
+        cmbAlgoritmos = new javax.swing.JComboBox<>();
+        btnCambiar = new javax.swing.JButton();
+        btnInterrupcion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("jLabel1");
+        lblReloj.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblReloj.setText("Reloj: 0");
 
-        jLabel2.setText("jLabel2");
+        lblCPU.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblCPU.setText("CPU: IDLE");
 
-        jLabel3.setText("jLabel3");
+        lblAlgoritmoActual.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblAlgoritmoActual.setText("Algoritmo: FCFS");
+
+        txtColaListos.setEditable(false);
+        txtColaListos.setColumns(20);
+        txtColaListos.setLineWrap(true);
+        txtColaListos.setRows(5);
+        txtColaListos.setWrapStyleWord(true);
+        txtColaListos.setBorder(javax.swing.BorderFactory.createTitledBorder("LISTOS"));
+        jScrollPane1.setViewportView(txtColaListos);
+
+        txtColaBloqueados.setEditable(false);
+        txtColaBloqueados.setColumns(20);
+        txtColaBloqueados.setLineWrap(true);
+        txtColaBloqueados.setRows(5);
+        txtColaBloqueados.setWrapStyleWord(true);
+        txtColaBloqueados.setBorder(javax.swing.BorderFactory.createTitledBorder("BLOQUEADOS"));
+        jScrollPane2.setViewportView(txtColaBloqueados);
+
+        txtTerminados.setEditable(false);
+        txtTerminados.setColumns(20);
+        txtTerminados.setLineWrap(true);
+        txtTerminados.setRows(5);
+        txtTerminados.setWrapStyleWord(true);
+        txtTerminados.setBorder(javax.swing.BorderFactory.createTitledBorder("TERMINADOS"));
+        jScrollPane3.setViewportView(txtTerminados);
+
+        cmbAlgoritmos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cmbAlgoritmos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FCFS", "Round Robin", "SRT", "Prioridad", "EDF" }));
+
+        btnCambiar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnCambiar.setText("Cambiar");
+        btnCambiar.addActionListener(this::btnCambiarActionPerformed);
+
+        btnInterrupcion.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnInterrupcion.setText("Crear Interrupción");
+        btnInterrupcion.addActionListener(this::btnInterrupcionActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(136, 136, 136)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(lblReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblAlgoritmoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(23, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(245, 245, 245)
+                .addComponent(lblCPU, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(cmbAlgoritmos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(btnCambiar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnInterrupcion)
+                .addGap(68, 68, 68))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(lblCPU)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(89, 89, 89)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblAlgoritmoActual)
+                            .addComponent(lblReloj))))
+                .addGap(70, 70, 70)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addContainerGap(278, Short.MAX_VALUE))
+                    .addComponent(cmbAlgoritmos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCambiar)
+                    .addComponent(btnInterrupcion))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarActionPerformed
+String seleccion = cmbAlgoritmos.getSelectedItem().toString();
+    Proyecto1SistemasOperativos.Algoritmo alg = Proyecto1SistemasOperativos.Algoritmo.FCFS;
+
+    switch (seleccion) {
+        case "FCFS" -> alg = Proyecto1SistemasOperativos.Algoritmo.FCFS;
+        case "Round Robin" -> alg = Proyecto1SistemasOperativos.Algoritmo.ROUND_ROBIN;
+        case "SRT" -> alg = Proyecto1SistemasOperativos.Algoritmo.SRT;
+        case "Prioridad" -> alg = Proyecto1SistemasOperativos.Algoritmo.PRIORIDAD;
+        case "EDF" -> alg = Proyecto1SistemasOperativos.Algoritmo.EDF;
+    }
+
+    Proyecto1SistemasOperativos.scheduler.cambiarAlgoritmo(alg);        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCambiarActionPerformed
+
+    private void btnInterrupcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInterrupcionActionPerformed
+int id = (int)(Math.random() * 1000);
+    // (id, nombre, instrucciones, prioridad, deadline, arrival, etc)
+    PCB nuevo = new PCB("INT-" + id, "Interrupcion", 15, 1, 30, Proyecto1SistemasOperativos.globalClock, 3);
+
+    try {
+        Proyecto1SistemasOperativos.mutexReady.acquire();
+        // Insertamos inteligentemente según el algoritmo actual
+        switch (Proyecto1SistemasOperativos.algoritmoActual) {
+            case PRIORIDAD -> Proyecto1SistemasOperativos.readyQueue.insertByPriority(nuevo);
+            case SRT -> Proyecto1SistemasOperativos.readyQueue.insertBySRT(nuevo);
+            case EDF -> Proyecto1SistemasOperativos.readyQueue.insertByDeadline(nuevo);
+            default -> Proyecto1SistemasOperativos.readyQueue.addLast(nuevo);
+        }
+        Proyecto1SistemasOperativos.mutexReady.release();
+        JOptionPane.showMessageDialog(this, "¡Proceso Creado!");
+    } catch (Exception ex) { ex.printStackTrace(); }        // TODO add your handling code here:
+    }//GEN-LAST:event_btnInterrupcionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -93,8 +223,47 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton btnCambiar;
+    private javax.swing.JButton btnInterrupcion;
+    private javax.swing.JComboBox<String> cmbAlgoritmos;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblAlgoritmoActual;
+    private javax.swing.JLabel lblCPU;
+    private javax.swing.JLabel lblReloj;
+    private javax.swing.JTextArea txtColaBloqueados;
+    private javax.swing.JTextArea txtColaListos;
+    private javax.swing.JTextArea txtTerminados;
     // End of variables declaration//GEN-END:variables
+
+    private void actualizarInformacion() {
+        // 1. Reloj
+        lblReloj.setText("Reloj: " + Proyecto1SistemasOperativos.globalClock);
+        
+        // 2. CPU
+        PCB p = Proyecto1SistemasOperativos.runningProcess;
+        if (p != null) {
+            lblCPU.setText("CPU: " + p.getNombre() + " (ID:" + p.getId() + ")");
+        } else {
+            lblCPU.setText("CPU: IDLE");
+        }
+        
+        // 3. Algoritmo
+        lblAlgoritmoActual.setText("Algoritmo: " + Proyecto1SistemasOperativos.algoritmoActual);
+        
+        // 4. Colas (Con protección de semáforos)
+        
+        if (Proyecto1SistemasOperativos.mutexReady.tryAcquire()) {
+            txtColaListos.setText(Proyecto1SistemasOperativos.readyQueue.toString());
+            Proyecto1SistemasOperativos.mutexReady.release();
+        }
+        
+        if (Proyecto1SistemasOperativos.mutexBlocked.tryAcquire()) {
+            txtColaBloqueados.setText(Proyecto1SistemasOperativos.blockedQueue.toString());
+            Proyecto1SistemasOperativos.mutexBlocked.release();
+        }
+        
+        txtTerminados.setText(Proyecto1SistemasOperativos.finishedQueue.toString());
+    }
 }
