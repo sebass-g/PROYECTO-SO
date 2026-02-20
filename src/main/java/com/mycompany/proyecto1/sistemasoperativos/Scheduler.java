@@ -16,68 +16,50 @@ public class Scheduler extends Thread {
         while (active) {
             try {
                 // 1. Velocidad de la simulación
-                Thread.sleep(200); // 0.2 segundos por ciclo
+                Thread.sleep(Proyecto1SistemasOperativos.velocidadSimulacion); // 0.2 segundos por ciclo
 
                 
                 // PASO A: SIMULACIÓN DE EJECUCIÓN 
                 
                 Proyecto1SistemasOperativos.mutexCPU.acquire();
                 PCB procesoActual = Proyecto1SistemasOperativos.runningProcess;
-                
+
                 if (procesoActual != null) {
-                    // Aumentar contador de instrucciones ejecutadas
+                    // Aumentar contador de instrucciones ejecutadas UNA SOLA VEZ
                     int ejecutadas = procesoActual.getInstruccionesEjecutadas();
                     procesoActual.setInstruccionesEjecutadas(ejecutadas + 1);
-                    
-                    // Verificar si el proceso YA TERMINÓ
-                    if (procesoActual.getInstruccionesEjecutadas() >= procesoActual.getInstruccionesTotales()) {
-                        System.out.println(">>> PROCESO TERMINADO: " + procesoActual.getNombre());
-                        
-                        procesoActual.setStatus("Terminado");
-                        
-                        // Guardar en la cola de terminados
-                        Proyecto1SistemasOperativos.finishedQueue.addLast(procesoActual);
-                        
-                        // Liberar el CPU
-                        Proyecto1SistemasOperativos.runningProcess = null;
-                        contadorRR = 0; // Reiniciar contador RR
-                    }
-                }
-                Proyecto1SistemasOperativos.mutexCPU.release();
-                
-                if (procesoActual != null) {
-                    // Aumentar contador de instrucciones ejecutadas
-                    int ejecutadas = procesoActual.getInstruccionesEjecutadas();
-                    procesoActual.setInstruccionesEjecutadas(ejecutadas + 1);
-                    
+
                     // 1. Verificar si el proceso YA TERMINÓ
                     if (procesoActual.getInstruccionesEjecutadas() >= procesoActual.getInstruccionesTotales()) {
                         System.out.println(">>> PROCESO TERMINADO: " + procesoActual.getNombre());
                         procesoActual.setStatus("Terminado");
-                        
+
+                        // Guardar en la cola de terminados
                         Proyecto1SistemasOperativos.finishedQueue.addLast(procesoActual);
+
+                        // Liberar el CPU
                         Proyecto1SistemasOperativos.runningProcess = null;
-                        contadorRR = 0; 
+                        contadorRR = 0; // Reiniciar contador RR
                     }
-                    // 2. NUEVO: Verificar si genera una EXCEPCIÓN (E/S)
+                    // 2. Verificar si genera una EXCEPCIÓN (E/S)
                     else if (procesoActual.getCiclosParaGenerarExcepcion() > 0 && 
                              procesoActual.getInstruccionesEjecutadas() == procesoActual.getCiclosParaGenerarExcepcion()) {
-                        
+
                         System.out.println("!!! PROCESO BLOQUEADO (E/S): " + procesoActual.getNombre());
                         procesoActual.setStatus("Bloqueado");
-                        
+
                         // Enviarlo a la cola de bloqueados
                         Proyecto1SistemasOperativos.mutexBlocked.acquire();
                         Proyecto1SistemasOperativos.blockedQueue.addLast(procesoActual);
                         Proyecto1SistemasOperativos.mutexBlocked.release();
-                        
+
                         // Liberar el CPU
                         Proyecto1SistemasOperativos.runningProcess = null;
                         contadorRR = 0;
-                        
+
                         // Lanzar el hilo independiente que simula la E/S
                         new ManejadorES(procesoActual).start();
-                    }
+                     }
                 }
                 Proyecto1SistemasOperativos.mutexCPU.release();
 

@@ -27,6 +27,7 @@ public class Proyecto1SistemasOperativos {
 
     // --- VARIABLES DEL SISTEMA ---
     public static int globalClock = 0;
+    public static int velocidadSimulacion = 1000;
     public static PCB runningProcess = null;
     
     // ---> LÍMITE DE MEMORIA PARA EL SWAP (Resuelve tu error) <---

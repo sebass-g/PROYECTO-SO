@@ -8,6 +8,7 @@ import javax.swing.Timer;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,6 +23,11 @@ public class Dashboard extends javax.swing.JFrame {
      */
    public Dashboard() {
         initComponents();
+        
+        // Redirigir la consola al JTextArea (txtConsola)
+        java.io.PrintStream printStream = new java.io.PrintStream(new CustomOutputStream(txtConsola));
+        System.setOut(printStream);
+        System.setErr(printStream);
         
         // Timer: Actualiza la pantalla cada 200ms
         Timer timer = new Timer(200, new ActionListener() {
@@ -42,123 +48,271 @@ public class Dashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane9 = new javax.swing.JScrollPane();
+        tblListos1 = new javax.swing.JTable();
         lblReloj = new javax.swing.JLabel();
         lblCPU = new javax.swing.JLabel();
         lblAlgoritmoActual = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtColaListos = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtColaBloqueados = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txtTerminados = new javax.swing.JTextArea();
         cmbAlgoritmos = new javax.swing.JComboBox<>();
         btnCambiar = new javax.swing.JButton();
         btnInterrupcion = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tblListos = new javax.swing.JTable();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        tblTerminados = new javax.swing.JTable();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        tblBloqueados = new javax.swing.JTable();
+        sldVelocidad = new javax.swing.JSlider();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtConsola = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        lblModo = new javax.swing.JLabel();
+
+        tblListos1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nombre", "Status", "PC", "MAR", "Prioridad", "Deadline"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane9.setViewportView(tblListos1);
+        if (tblListos1.getColumnModel().getColumnCount() > 0) {
+            tblListos1.getColumnModel().getColumn(1).setResizable(false);
+            tblListos1.getColumnModel().getColumn(2).setResizable(false);
+            tblListos1.getColumnModel().getColumn(3).setResizable(false);
+            tblListos1.getColumnModel().getColumn(4).setResizable(false);
+            tblListos1.getColumnModel().getColumn(5).setResizable(false);
+            tblListos1.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lblReloj.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblReloj.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblReloj.setText("Reloj: 0");
 
         lblCPU.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblCPU.setText("CPU: IDLE");
 
-        lblAlgoritmoActual.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblAlgoritmoActual.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblAlgoritmoActual.setText("Algoritmo: FCFS");
 
-        txtColaListos.setEditable(false);
-        txtColaListos.setColumns(20);
-        txtColaListos.setLineWrap(true);
-        txtColaListos.setRows(5);
-        txtColaListos.setWrapStyleWord(true);
-        txtColaListos.setBorder(javax.swing.BorderFactory.createTitledBorder("LISTOS"));
-        jScrollPane1.setViewportView(txtColaListos);
-
-        txtColaBloqueados.setEditable(false);
-        txtColaBloqueados.setColumns(20);
-        txtColaBloqueados.setLineWrap(true);
-        txtColaBloqueados.setRows(5);
-        txtColaBloqueados.setWrapStyleWord(true);
-        txtColaBloqueados.setBorder(javax.swing.BorderFactory.createTitledBorder("BLOQUEADOS"));
-        jScrollPane2.setViewportView(txtColaBloqueados);
-
-        txtTerminados.setEditable(false);
-        txtTerminados.setColumns(20);
-        txtTerminados.setLineWrap(true);
-        txtTerminados.setRows(5);
-        txtTerminados.setWrapStyleWord(true);
-        txtTerminados.setBorder(javax.swing.BorderFactory.createTitledBorder("TERMINADOS"));
-        jScrollPane3.setViewportView(txtTerminados);
-
-        cmbAlgoritmos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cmbAlgoritmos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         cmbAlgoritmos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FCFS", "Round Robin", "SRT", "Prioridad", "EDF" }));
 
-        btnCambiar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnCambiar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnCambiar.setText("Cambiar");
         btnCambiar.addActionListener(this::btnCambiarActionPerformed);
 
-        btnInterrupcion.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnInterrupcion.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnInterrupcion.setText("Crear Interrupción");
         btnInterrupcion.addActionListener(this::btnInterrupcionActionPerformed);
+
+        tblListos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nombre", "Status", "PC", "MAR", "Prioridad", "Deadline"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblListos.setToolTipText("");
+        jScrollPane6.setViewportView(tblListos);
+        if (tblListos.getColumnModel().getColumnCount() > 0) {
+            tblListos.getColumnModel().getColumn(1).setResizable(false);
+            tblListos.getColumnModel().getColumn(2).setResizable(false);
+            tblListos.getColumnModel().getColumn(3).setResizable(false);
+            tblListos.getColumnModel().getColumn(4).setResizable(false);
+            tblListos.getColumnModel().getColumn(5).setResizable(false);
+            tblListos.getColumnModel().getColumn(6).setResizable(false);
+        }
+
+        tblTerminados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nombre", "Status", "PC", "MAR", "Prioridad", "Deadline"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane10.setViewportView(tblTerminados);
+        if (tblTerminados.getColumnModel().getColumnCount() > 0) {
+            tblTerminados.getColumnModel().getColumn(1).setResizable(false);
+            tblTerminados.getColumnModel().getColumn(2).setResizable(false);
+            tblTerminados.getColumnModel().getColumn(3).setResizable(false);
+            tblTerminados.getColumnModel().getColumn(4).setResizable(false);
+            tblTerminados.getColumnModel().getColumn(5).setResizable(false);
+            tblTerminados.getColumnModel().getColumn(6).setResizable(false);
+        }
+
+        tblBloqueados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nombre", "Status", "PC", "MAR", "Prioridad", "Deadline"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane11.setViewportView(tblBloqueados);
+        if (tblBloqueados.getColumnModel().getColumnCount() > 0) {
+            tblBloqueados.getColumnModel().getColumn(1).setResizable(false);
+            tblBloqueados.getColumnModel().getColumn(2).setResizable(false);
+            tblBloqueados.getColumnModel().getColumn(3).setResizable(false);
+            tblBloqueados.getColumnModel().getColumn(4).setResizable(false);
+            tblBloqueados.getColumnModel().getColumn(5).setResizable(false);
+            tblBloqueados.getColumnModel().getColumn(6).setResizable(false);
+        }
+
+        sldVelocidad.setMaximum(3000);
+        sldVelocidad.setMinimum(100);
+        sldVelocidad.setPaintLabels(true);
+        sldVelocidad.setPaintTicks(true);
+        sldVelocidad.setValue(1000);
+        sldVelocidad.addChangeListener(this::sldVelocidadStateChanged);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setText("COLA DE TERMINADOS");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setText("COLA DE LISTOS");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setText("COLA DE BLOQUEADOS");
+
+        txtConsola.setBackground(new java.awt.Color(0, 0, 0));
+        txtConsola.setColumns(20);
+        txtConsola.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        txtConsola.setForeground(new java.awt.Color(0, 255, 0));
+        txtConsola.setRows(5);
+        jScrollPane1.setViewportView(txtConsola);
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setText("LOG DE EVENTOS");
+
+        lblModo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblModo.setForeground(new java.awt.Color(255, 0, 0));
+        lblModo.setText("Modo: KERNEL");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(245, 245, 245)
-                .addComponent(lblCPU, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sldVelocidad, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cmbAlgoritmos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
-                        .addComponent(btnCambiar)
-                        .addGap(220, 220, 220))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(32, 32, 32)
-                            .addComponent(lblReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(38, 38, 38)
+                        .addComponent(btnCambiar)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(lblAlgoritmoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(0, 0, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addContainerGap(41, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnInterrupcion)
-                        .addGap(68, 68, 68))))
+                    .addComponent(lblModo)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel3)
+                        .addComponent(lblCPU, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)
+                        .addComponent(jLabel4)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblAlgoritmoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnInterrupcion, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(lblCPU)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblCPU)
+                    .addComponent(lblReloj, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblAlgoritmoActual)
+                        .addComponent(sldVelocidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblModo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(89, 89, 89)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1)
-                            .addComponent(jScrollPane2)))
+                        .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblAlgoritmoActual)
-                            .addComponent(lblReloj))))
-                .addGap(70, 70, 70)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbAlgoritmos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCambiar)
-                    .addComponent(btnInterrupcion))
-                .addContainerGap(31, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cmbAlgoritmos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnCambiar)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(btnInterrupcion)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(25, 25, 25))
         );
 
         pack();
@@ -198,6 +352,11 @@ int id = (int)(Math.random() * 1000);
     } catch (Exception ex) { ex.printStackTrace(); }
     }//GEN-LAST:event_btnInterrupcionActionPerformed
 
+    private void sldVelocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldVelocidadStateChanged
+// Actualizamos la variable global con el valor que elija el usuario en la barra
+Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();        // TODO add your handling code here:
+    }//GEN-LAST:event_sldVelocidadStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -227,44 +386,105 @@ int id = (int)(Math.random() * 1000);
     private javax.swing.JButton btnCambiar;
     private javax.swing.JButton btnInterrupcion;
     private javax.swing.JComboBox<String> cmbAlgoritmos;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JLabel lblAlgoritmoActual;
     private javax.swing.JLabel lblCPU;
+    private javax.swing.JLabel lblModo;
     private javax.swing.JLabel lblReloj;
-    private javax.swing.JTextArea txtColaBloqueados;
-    private javax.swing.JTextArea txtColaListos;
-    private javax.swing.JTextArea txtTerminados;
+    private javax.swing.JSlider sldVelocidad;
+    private javax.swing.JTable tblBloqueados;
+    private javax.swing.JTable tblListos;
+    private javax.swing.JTable tblListos1;
+    private javax.swing.JTable tblTerminados;
+    private javax.swing.JTextArea txtConsola;
     // End of variables declaration//GEN-END:variables
 
     private void actualizarInformacion() {
         // 1. Reloj
         lblReloj.setText("Reloj: " + Proyecto1SistemasOperativos.globalClock);
-        
-        // 2. CPU
+
+        // 2. CPU y Modo
         PCB p = Proyecto1SistemasOperativos.runningProcess;
         if (p != null) {
             lblCPU.setText("CPU: " + p.getNombre() + " (ID:" + p.getId() + ")");
+            lblModo.setText("MODO: USUARIO"); // El CPU está ocupado por un proceso
+            lblModo.setForeground(new java.awt.Color(0, 153, 0)); // Verde
         } else {
             lblCPU.setText("CPU: IDLE");
+            lblModo.setText("MODO: KERNEL"); // El OS está buscando qué hacer
+            lblModo.setForeground(java.awt.Color.RED); // Rojo o Azul
         }
-        
+
         // 3. Algoritmo
         lblAlgoritmoActual.setText("Algoritmo: " + Proyecto1SistemasOperativos.algoritmoActual);
-        
-        // 4. Colas (Con protección de semáforos)
-        
+
+        // 4. Colas (Ahora usando JTables en lugar de TextAreas)
+
+        // --- COLA DE LISTOS ---
         if (Proyecto1SistemasOperativos.mutexReady.tryAcquire()) {
-            txtColaListos.setText(Proyecto1SistemasOperativos.readyQueue.toString());
+            DefaultTableModel modeloListos = (DefaultTableModel) tblListos.getModel();
+            modeloListos.setRowCount(0); // Esto limpia la tabla antes de reescribirla
+
+            // NOTA: Ajusta ".getSize()" y ".get(i)" según como se llamen en tu clase de Colas
+            for (int i = 0; i < Proyecto1SistemasOperativos.readyQueue.getSize(); i++) {
+                PCB pcb = Proyecto1SistemasOperativos.readyQueue.get(i);
+                modeloListos.addRow(new Object[]{
+                    pcb.getId(), pcb.getNombre(), pcb.getStatus(), 
+                    pcb.getPc(), pcb.getMar(), pcb.getPrioridad(), pcb.getDeadline()
+                });
+            }
             Proyecto1SistemasOperativos.mutexReady.release();
         }
-        
+
+        // --- COLA DE BLOQUEADOS ---
         if (Proyecto1SistemasOperativos.mutexBlocked.tryAcquire()) {
-            txtColaBloqueados.setText(Proyecto1SistemasOperativos.blockedQueue.toString());
+            DefaultTableModel modeloBloqueados = (DefaultTableModel) tblBloqueados.getModel();
+            modeloBloqueados.setRowCount(0);
+
+            for (int i = 0; i < Proyecto1SistemasOperativos.blockedQueue.getSize(); i++) {
+                PCB pcb = Proyecto1SistemasOperativos.blockedQueue.get(i);
+                modeloBloqueados.addRow(new Object[]{
+                    pcb.getId(), pcb.getNombre(), pcb.getStatus(), 
+                    pcb.getPc(), pcb.getMar(), pcb.getPrioridad(), pcb.getDeadline()
+                });
+            }
             Proyecto1SistemasOperativos.mutexBlocked.release();
         }
-        
-        txtTerminados.setText(Proyecto1SistemasOperativos.finishedQueue.toString());
+
+        // --- COLA DE TERMINADOS ---
+        DefaultTableModel modeloTerminados = (DefaultTableModel) tblTerminados.getModel();
+        modeloTerminados.setRowCount(0);
+
+        for (int i = 0; i < Proyecto1SistemasOperativos.finishedQueue.getSize(); i++) {
+            PCB pcb = Proyecto1SistemasOperativos.finishedQueue.get(i);
+            modeloTerminados.addRow(new Object[]{
+                pcb.getId(), pcb.getNombre(), pcb.getStatus(), 
+                pcb.getPc(), pcb.getMar(), pcb.getPrioridad(), pcb.getDeadline()
+            });
+        }
+    }
+    // --- CLASE MÁGICA PARA REDIRIGIR LA CONSOLA ---
+    class CustomOutputStream extends java.io.OutputStream {
+        private javax.swing.JTextArea textArea;
+
+        public CustomOutputStream(javax.swing.JTextArea textArea) {
+            this.textArea = textArea;
+        }
+
+        @Override
+        public void write(int b) {
+            // Escribe el texto en el JTextArea
+            textArea.append(String.valueOf((char)b));
+            // Hace que el scroll baje automáticamente para ver el texto más reciente
+            textArea.setCaretPosition(textArea.getDocument().getLength());
+        }
     }
 }

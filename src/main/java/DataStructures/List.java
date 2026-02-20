@@ -170,6 +170,18 @@ public class List {
         return farthestPCB;
     }
     
+    // Método para obtener un PCB por su índice (Para las tablas del Dashboard)
+    public PCB get(int index) {
+        if (index < 0 || index >= size || head == null) {
+            return null;
+        }
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current.pcb;
+    }
+    
     @Override
     public String toString() {
         if (isEmpty()) {
