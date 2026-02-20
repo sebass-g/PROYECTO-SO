@@ -17,11 +17,11 @@ import javax.swing.table.DefaultTableModel;
 public class Dashboard extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Dashboard.class.getName());
-
+    
     /**
      * Creates new form Dashboard
      */
-   public Dashboard() {
+    public Dashboard() {
         initComponents();
         
         // Redirigir la consola al JTextArea (txtConsola)
@@ -38,7 +38,7 @@ public class Dashboard extends javax.swing.JFrame {
         });
         timer.start();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -196,4 +196,8 @@ public class List {
         }
         return sb.toString();
     }
+    
+    public Node getHead() {
+        return head;
+    }
 }

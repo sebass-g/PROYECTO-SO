@@ -163,4 +163,29 @@ public class PCB {
         // Devuelve: "Nombre (ID) - Prioridad: X"
         return this.nombre + " (ID:" + this.id + ") - P:" + this.prioridad;
     }
+    
+    // --- VARIABLES DE TIEMPO PARA LA GRÁFICA ---
+    private int tiempoFinalizacion;
+
+    // --- MÉTODOS PARA LA GRÁFICA ---
+    public int getTiempoFinalizacion() {
+        return tiempoFinalizacion;
+    }
+
+    public void setTiempoFinalizacion(int tiempoFinalizacion) {
+        this.tiempoFinalizacion = tiempoFinalizacion;
+    }
+
+    // Calcula cuánto tiempo pasó el proceso esperando en colas
+    public int getTiempoEspera() {
+        // Tiempo total que existió = Finalización - Llegada
+        int tiempoEnSistema = this.tiempoFinalizacion - this.getTiempoLlegada();
+        
+        // Calculamos la espera
+        int espera = tiempoEnSistema - this.getInstruccionesTotales();
+        
+        // Retornamos el VALOR ABSOLUTO para eliminar el signo negativo 
+        // y conservar el número exacto que necesitas.
+        return Math.abs(espera);
+    }
 }

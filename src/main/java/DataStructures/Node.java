@@ -10,8 +10,8 @@ package DataStructures;
  * @author Luigi
  */
 public class Node {
-    PCB pcb;
-    Node next;
+    public PCB pcb;
+    public Node next;
 
     public Node(PCB pcb) {
         this.pcb = pcb;

@@ -62,9 +62,23 @@ public class Proyecto1SistemasOperativos {
         MemoryManager memoryManager = new MemoryManager();
         memoryManager.start();
         
-        // 5. Iniciar la Interfaz Gráfica
+        // 5. Iniciar la Interfaz Gráfica y Ventana Gráficos
         java.awt.EventQueue.invokeLater(() -> {
-            new Dashboard().setVisible(true);
+            Dashboard ventanaPrincipal = new Dashboard();
+            VentanaGraficas ventanaGraficas = new VentanaGraficas();
+            
+            // 1. ESTABLECER EL TAMAÑO (Ancho, Alto) en píxeles
+            // Ajusta estos números según el tamaño de tu pantalla
+            ventanaGraficas.setSize(700, 550); 
+            
+            // 2. ACOMODARLAS EN LA PANTALLA (Coordenadas X, Y)
+            // Así evitas que aparezcan encimadas la una sobre la otra
+            ventanaPrincipal.setLocation(100, 100);  // Más pegada a la izquierda
+            ventanaGraficas.setLocation(750, 100);   // Más pegada a la derecha
+            
+            // 3. HACERLAS VISIBLES
+            ventanaPrincipal.setVisible(true);
+            ventanaGraficas.setVisible(true);
         });
         
         System.out.println("Sistemas iniciados correctamente.");
