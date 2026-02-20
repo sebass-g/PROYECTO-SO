@@ -5,6 +5,7 @@ DataStructures\Semaphore.class
 DataStructures\Clock.class
 com\mycompany\proyecto1\sistemasoperativos\ManejadorES$1.class
 DataStructures\List.class
+com\mycompany\proyecto1\sistemasoperativos\Scheduler$1.class
 com\mycompany\proyecto1\sistemasoperativos\InterruptGenerator.class
 com\mycompany\proyecto1\sistemasoperativos\Proyecto1SistemasOperativos.class
 DataStructures\Node.class
