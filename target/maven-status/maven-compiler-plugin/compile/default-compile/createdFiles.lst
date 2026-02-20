@@ -1,8 +1,13 @@
+com\mycompany\proyecto1\sistemasoperativos\Dashboard$2.class
+com\mycompany\proyecto1\sistemasoperativos\MemoryManager$1.class
+com\mycompany\proyecto1\sistemasoperativos\MemoryManager.class
+DataStructures\Semaphore.class
+DataStructures\Clock.class
+com\mycompany\proyecto1\sistemasoperativos\ManejadorES$1.class
 DataStructures\List.class
 com\mycompany\proyecto1\sistemasoperativos\InterruptGenerator.class
 com\mycompany\proyecto1\sistemasoperativos\Proyecto1SistemasOperativos.class
-DataStructures\Semaphore.class
 DataStructures\Node.class
-DataStructures\Clock.class
 com\mycompany\proyecto1\sistemasoperativos\Scheduler.class
 DataStructures\PCB.class
+com\mycompany\proyecto1\sistemasoperativos\ManejadorES.class

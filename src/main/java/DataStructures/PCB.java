@@ -46,7 +46,7 @@ public class PCB {
         this.pc = 0;
         this.mar = 0;
         this.instruccionesEjecutadas = 0;
-    }
+    }    
     public String getId() {
         return id;
     }

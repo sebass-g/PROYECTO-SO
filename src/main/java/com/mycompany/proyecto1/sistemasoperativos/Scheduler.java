@@ -45,7 +45,41 @@ public class Scheduler extends Thread {
                 }
                 Proyecto1SistemasOperativos.mutexCPU.release();
                 
-
+                if (procesoActual != null) {
+                    // Aumentar contador de instrucciones ejecutadas
+                    int ejecutadas = procesoActual.getInstruccionesEjecutadas();
+                    procesoActual.setInstruccionesEjecutadas(ejecutadas + 1);
+                    
+                    // 1. Verificar si el proceso YA TERMINÓ
+                    if (procesoActual.getInstruccionesEjecutadas() >= procesoActual.getInstruccionesTotales()) {
+                        System.out.println(">>> PROCESO TERMINADO: " + procesoActual.getNombre());
+                        procesoActual.setStatus("Terminado");
+                        
+                        Proyecto1SistemasOperativos.finishedQueue.addLast(procesoActual);
+                        Proyecto1SistemasOperativos.runningProcess = null;
+                        contadorRR = 0; 
+                    }
+                    // 2. NUEVO: Verificar si genera una EXCEPCIÓN (E/S)
+                    else if (procesoActual.getCiclosParaGenerarExcepcion() > 0 && 
+                             procesoActual.getInstruccionesEjecutadas() == procesoActual.getCiclosParaGenerarExcepcion()) {
+                        
+                        System.out.println("!!! PROCESO BLOQUEADO (E/S): " + procesoActual.getNombre());
+                        procesoActual.setStatus("Bloqueado");
+                        
+                        // Enviarlo a la cola de bloqueados
+                        Proyecto1SistemasOperativos.mutexBlocked.acquire();
+                        Proyecto1SistemasOperativos.blockedQueue.addLast(procesoActual);
+                        Proyecto1SistemasOperativos.mutexBlocked.release();
+                        
+                        // Liberar el CPU
+                        Proyecto1SistemasOperativos.runningProcess = null;
+                        contadorRR = 0;
+                        
+                        // Lanzar el hilo independiente que simula la E/S
+                        new ManejadorES(procesoActual).start();
+                    }
+                }
+                Proyecto1SistemasOperativos.mutexCPU.release();
 
                
                 // PASO B: LÓGICA DE ROUND ROBIN 
