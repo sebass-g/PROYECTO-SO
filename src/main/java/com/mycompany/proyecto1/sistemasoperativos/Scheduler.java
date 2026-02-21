@@ -1,0 +1,223 @@
+package com.mycompany.proyecto1.sistemasoperativos;
+
+import DataStructures.List;
+import DataStructures.PCB;
+
+/**
+ *
+ * @author Luigi Lauricella & Sebastian Gonzalez
+ */
+public class Scheduler extends Thread {
+    private boolean active = true;
+    private int contadorRR = 0; 
+
+    @Override
+    public void run() {
+        while (active) {
+            try {
+                Thread.sleep(Proyecto1SistemasOperativos.velocidadSimulacion); // 0.2 segundos por ciclo
+
+                // 1. Simulación de procesos
+                
+                Proyecto1SistemasOperativos.mutexCPU.acquire();
+                PCB procesoActual = Proyecto1SistemasOperativos.runningProcess;
+
+                if (procesoActual != null) {
+                    // Aumentar contador de instrucciones ejecutadas UNA SOLA VEZ
+                    int ejecutadas = procesoActual.getInstruccionesEjecutadas();
+                    procesoActual.setInstruccionesEjecutadas(ejecutadas + 1);
+
+                    // Verifica si el proceso terminó
+                    if (procesoActual.getInstruccionesEjecutadas() >= procesoActual.getInstruccionesTotales()) {
+                        System.out.println(">>> PROCESO TERMINADO: " + procesoActual.getNombre());
+                        procesoActual.setStatus("Terminado");
+
+                        // Guardar en la cola de terminados
+                        Proyecto1SistemasOperativos.finishedQueue.addLast(procesoActual);
+
+                        // Liberar el CPU
+                        Proyecto1SistemasOperativos.runningProcess = null;
+                        contadorRR = 0; // Reiniciar contador RR
+                    }
+                    // Verifica una excepción (E/S)
+                    else if (procesoActual.getCiclosParaGenerarExcepcion() > 0 && 
+                             procesoActual.getInstruccionesEjecutadas() == procesoActual.getCiclosParaGenerarExcepcion()) {
+
+                        System.out.println("!!! PROCESO BLOQUEADO (E/S): " + procesoActual.getNombre());
+                        procesoActual.setStatus("Bloqueado");
+
+                        // Enviarlo a la cola de bloqueados
+                        Proyecto1SistemasOperativos.mutexBlocked.acquire();
+                        Proyecto1SistemasOperativos.blockedQueue.addLast(procesoActual);
+                        Proyecto1SistemasOperativos.mutexBlocked.release();
+
+                        // Liberar el CPU
+                        Proyecto1SistemasOperativos.runningProcess = null;
+                        contadorRR = 0;
+
+                        // Lanzar el hilo independiente que simula la E/S
+                        new ManejadorES(procesoActual).start();
+                     }
+                }
+                Proyecto1SistemasOperativos.mutexCPU.release();
+
+               
+                // 2. Lógica de RoundRobin
+                
+                if (Proyecto1SistemasOperativos.algoritmoActual == Proyecto1SistemasOperativos.Algoritmo.ROUND_ROBIN) {
+                    
+                    Proyecto1SistemasOperativos.mutexCPU.acquire();
+                    if (Proyecto1SistemasOperativos.runningProcess != null) {
+                        contadorRR++;
+                        // Si se acabó su tiempo (Quantum)
+                        if (contadorRR >= Proyecto1SistemasOperativos.quantum) {
+                            System.out.println("--- Fin de Quantum RR para " + Proyecto1SistemasOperativos.runningProcess.getNombre() + " ---");
+                            
+                            PCB procesoSaliente = Proyecto1SistemasOperativos.runningProcess;
+                            procesoSaliente.setStatus("Listo");
+                            
+                            Proyecto1SistemasOperativos.mutexReady.acquire();
+                            Proyecto1SistemasOperativos.readyQueue.addLast(procesoSaliente);
+                            Proyecto1SistemasOperativos.mutexReady.release();
+                            
+                            Proyecto1SistemasOperativos.runningProcess = null;
+                            contadorRR = 0; 
+                        }
+                    }
+                    Proyecto1SistemasOperativos.mutexCPU.release();
+                }
+
+               
+                // 3. Despachar
+          
+                if (Proyecto1SistemasOperativos.runningProcess == null) {
+                    despacharProceso();
+                } else {
+                    verificarPreemcion(); 
+                }
+
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+    }
+
+    private void despacharProceso() {
+        // Solo intentamos despachar si hay gente en la cola de listos
+        if (Proyecto1SistemasOperativos.readyQueue.isEmpty()) {
+            return;
+        }
+
+        Proyecto1SistemasOperativos.mutexReady.acquire();
+        Proyecto1SistemasOperativos.mutexCPU.acquire();
+
+        // Verificar de nuevo por seguridad
+        if (!Proyecto1SistemasOperativos.readyQueue.isEmpty()) {
+            PCB proximo = Proyecto1SistemasOperativos.readyQueue.removeFirst();
+            if (proximo != null) {
+                proximo.setStatus("Ejecución");
+                Proyecto1SistemasOperativos.runningProcess = proximo;
+                contadorRR = 0;
+                System.out.println("[SCHEDULER] Ejecutando: " + proximo.getNombre());
+            }
+        }
+
+        Proyecto1SistemasOperativos.mutexCPU.release();
+        Proyecto1SistemasOperativos.mutexReady.release();
+    }
+    
+    // Método público para que el Dashboard lo llame
+    public void cambiarAlgoritmo(Proyecto1SistemasOperativos.Algoritmo nuevoAlgoritmo) {
+        Proyecto1SistemasOperativos.mutexReady.acquire();
+        
+        Proyecto1SistemasOperativos.algoritmoActual = nuevoAlgoritmo;
+        System.out.println(">>> CAMBIO DE ALGORITMO A: " + nuevoAlgoritmo + " <<<");
+        
+        List tempQueue = new List();
+        while (!Proyecto1SistemasOperativos.readyQueue.isEmpty()) {
+            PCB p = Proyecto1SistemasOperativos.readyQueue.removeFirst();
+            
+            switch (nuevoAlgoritmo) {
+                case FCFS: 
+                case ROUND_ROBIN:
+                    tempQueue.addLast(p); 
+                    break;
+                case SRT:
+                    tempQueue.insertBySRT(p);
+                    break;
+                case PRIORIDAD:
+                    tempQueue.insertByPriority(p);
+                    break;
+                case EDF:
+                    tempQueue.insertByDeadline(p);
+                    break;
+            }
+        }
+        Proyecto1SistemasOperativos.readyQueue = tempQueue;
+        
+        Proyecto1SistemasOperativos.mutexReady.release();
+    }
+
+    private void verificarPreemcion() {
+        // Verifica primero si readyQueue tiene algo antes de bloquear mutexes
+        if (Proyecto1SistemasOperativos.readyQueue.isEmpty()) return;
+
+        Proyecto1SistemasOperativos.mutexReady.acquire();
+        Proyecto1SistemasOperativos.mutexCPU.acquire();
+        
+        PCB running = Proyecto1SistemasOperativos.runningProcess;
+        PCB candidato = Proyecto1SistemasOperativos.readyQueue.peek(); 
+
+        if (running != null && candidato != null) {
+            boolean debeCambiar = false;
+
+            switch (Proyecto1SistemasOperativos.algoritmoActual) {
+                case PRIORIDAD:
+                    if (candidato.getPrioridad() < running.getPrioridad()) {
+                        debeCambiar = true;
+                    }
+                    break;
+                case SRT:
+                    int restanteCandidato = candidato.getInstruccionesTotales() - candidato.getInstruccionesEjecutadas();
+                    int restanteRunning = running.getInstruccionesTotales() - running.getInstruccionesEjecutadas();
+                    if (restanteCandidato < restanteRunning) {
+                        debeCambiar = true;
+                    }
+                    break;
+                case EDF:
+                    if (candidato.getDeadline() < running.getDeadline()) {
+                        debeCambiar = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            if (debeCambiar) {
+                System.out.println(">>> PREEMCIÓN: " + candidato.getNombre() + " desplaza a " + running.getNombre());
+                
+                running.setStatus("Listo");
+                PCB procesoSaliente = running;
+                Proyecto1SistemasOperativos.runningProcess = null; 
+                
+                switch (Proyecto1SistemasOperativos.algoritmoActual) {
+                    case PRIORIDAD:
+                        Proyecto1SistemasOperativos.readyQueue.insertByPriority(procesoSaliente);
+                        break;
+                    case SRT:
+                        Proyecto1SistemasOperativos.readyQueue.insertBySRT(procesoSaliente);
+                        break;
+                    case EDF:
+                        Proyecto1SistemasOperativos.readyQueue.insertByDeadline(procesoSaliente);
+                        break;
+                    default:
+                        Proyecto1SistemasOperativos.readyQueue.addLast(procesoSaliente);
+                }
+            }
+        }
+
+        Proyecto1SistemasOperativos.mutexCPU.release();
+        Proyecto1SistemasOperativos.mutexReady.release();
+    }
+}
