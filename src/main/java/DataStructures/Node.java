@@ -7,7 +7,7 @@ package DataStructures;
 
 /**
  *
- * @author Luigi
+ * @author Luigi Lauricella & Sebastian Gonzalez
  */
 public class Node {
     public PCB pcb;

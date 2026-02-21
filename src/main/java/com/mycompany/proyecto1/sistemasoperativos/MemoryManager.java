@@ -8,7 +8,7 @@ import DataStructures.PCB;
 
 /**
  *
- * @author Luigi
+ * @author Luigi Lauricella & Sebastian Gonzalez
  */
 public class MemoryManager extends Thread {
     private boolean active = true;
@@ -17,7 +17,7 @@ public class MemoryManager extends Thread {
     public void run() {
         while (active) {
             try {
-                // El vigilante de memoria revisa cada 500ms
+                // Ciclo de 500
                 Thread.sleep(500); 
 
                 // 1. Adquirir todos los semáforos para evitar inconsistencias al contar o mover

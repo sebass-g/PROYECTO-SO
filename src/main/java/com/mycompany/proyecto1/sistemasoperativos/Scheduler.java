@@ -5,7 +5,7 @@ import DataStructures.PCB;
 
 /**
  *
- * @author Luigi
+ * @author Luigi Lauricella & Sebastian Gonzalez
  */
 public class Scheduler extends Thread {
     private boolean active = true;
@@ -15,11 +15,9 @@ public class Scheduler extends Thread {
     public void run() {
         while (active) {
             try {
-                // 1. Velocidad de la simulación
                 Thread.sleep(Proyecto1SistemasOperativos.velocidadSimulacion); // 0.2 segundos por ciclo
 
-                
-                // PASO A: SIMULACIÓN DE EJECUCIÓN 
+                // 1. Simulación de procesos
                 
                 Proyecto1SistemasOperativos.mutexCPU.acquire();
                 PCB procesoActual = Proyecto1SistemasOperativos.runningProcess;
@@ -29,7 +27,7 @@ public class Scheduler extends Thread {
                     int ejecutadas = procesoActual.getInstruccionesEjecutadas();
                     procesoActual.setInstruccionesEjecutadas(ejecutadas + 1);
 
-                    // 1. Verificar si el proceso YA TERMINÓ
+                    // Verifica si el proceso terminó
                     if (procesoActual.getInstruccionesEjecutadas() >= procesoActual.getInstruccionesTotales()) {
                         System.out.println(">>> PROCESO TERMINADO: " + procesoActual.getNombre());
                         procesoActual.setStatus("Terminado");
@@ -41,7 +39,7 @@ public class Scheduler extends Thread {
                         Proyecto1SistemasOperativos.runningProcess = null;
                         contadorRR = 0; // Reiniciar contador RR
                     }
-                    // 2. Verificar si genera una EXCEPCIÓN (E/S)
+                    // Verifica una excepción (E/S)
                     else if (procesoActual.getCiclosParaGenerarExcepcion() > 0 && 
                              procesoActual.getInstruccionesEjecutadas() == procesoActual.getCiclosParaGenerarExcepcion()) {
 
@@ -64,7 +62,7 @@ public class Scheduler extends Thread {
                 Proyecto1SistemasOperativos.mutexCPU.release();
 
                
-                // PASO B: LÓGICA DE ROUND ROBIN 
+                // 2. Lógica de RoundRobin
                 
                 if (Proyecto1SistemasOperativos.algoritmoActual == Proyecto1SistemasOperativos.Algoritmo.ROUND_ROBIN) {
                     
@@ -90,7 +88,7 @@ public class Scheduler extends Thread {
                 }
 
                
-                // PASO C: DESPACHAR O EXPROPIAR 
+                // 3. Despachar
           
                 if (Proyecto1SistemasOperativos.runningProcess == null) {
                     despacharProceso();
@@ -162,8 +160,7 @@ public class Scheduler extends Thread {
     }
 
     private void verificarPreemcion() {
-        // Esta función puede ser costosa si se llama muy rápido, 
-        // verifica primero si readyQueue tiene algo antes de bloquear mutexes
+        // Verifica primero si readyQueue tiene algo antes de bloquear mutexes
         if (Proyecto1SistemasOperativos.readyQueue.isEmpty()) return;
 
         Proyecto1SistemasOperativos.mutexReady.acquire();

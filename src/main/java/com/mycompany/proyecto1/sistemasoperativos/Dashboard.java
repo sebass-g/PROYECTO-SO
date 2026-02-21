@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author sebas
+ * @author Luigi Lauricella & Sebastian Gonzalez
  */
 public class Dashboard extends javax.swing.JFrame {
     
@@ -31,12 +31,12 @@ public class Dashboard extends javax.swing.JFrame {
     txtConsola.setBackground(new java.awt.Color(20, 20, 30));
     
    
-        // Redirigir la consola al JTextArea (txtConsola)
+        // Redirigir la consola al JTextArea (Log de Estados)
         java.io.PrintStream printStream = new java.io.PrintStream(new CustomOutputStream(txtConsola));
         System.setOut(printStream);
         System.setErr(printStream);
         
-        // Timer: Actualiza la pantalla cada 200ms
+        // Timer cada 200ms
         Timer timer = new Timer(200, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -117,7 +117,7 @@ public class Dashboard extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(30, 30, 45));
 
-        lblReloj.setBackground(new java.awt.Color(0, 51, 102));
+        lblReloj.setBackground(new java.awt.Color(30, 30, 45));
         lblReloj.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblReloj.setForeground(new java.awt.Color(204, 204, 204));
         lblReloj.setText("Reloj: 0");
@@ -126,10 +126,10 @@ public class Dashboard extends javax.swing.JFrame {
         lblCPU.setBackground(new java.awt.Color(204, 204, 255));
         lblCPU.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblCPU.setForeground(new java.awt.Color(0, 0, 102));
-        lblCPU.setText("CPU: IDLE");
+        lblCPU.setText("   CPU: IDLE");
         lblCPU.setOpaque(true);
 
-        lblAlgoritmoActual.setBackground(new java.awt.Color(0, 51, 102));
+        lblAlgoritmoActual.setBackground(new java.awt.Color(30, 30, 45));
         lblAlgoritmoActual.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblAlgoritmoActual.setForeground(new java.awt.Color(204, 204, 204));
         lblAlgoritmoActual.setText("Algoritmo: FCFS");
@@ -153,6 +153,7 @@ public class Dashboard extends javax.swing.JFrame {
         btnInterrupcion.addActionListener(this::btnInterrupcionActionPerformed);
 
         tblListos.setBackground(new java.awt.Color(153, 204, 255));
+        tblListos.setForeground(new java.awt.Color(30, 30, 45));
         tblListos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -183,7 +184,8 @@ public class Dashboard extends javax.swing.JFrame {
             tblListos.getColumnModel().getColumn(6).setResizable(false);
         }
 
-        tblTerminados.setBackground(new java.awt.Color(153, 204, 255));
+        tblTerminados.setBackground(new java.awt.Color(0, 204, 51));
+        tblTerminados.setForeground(new java.awt.Color(30, 30, 45));
         tblTerminados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -213,7 +215,8 @@ public class Dashboard extends javax.swing.JFrame {
             tblTerminados.getColumnModel().getColumn(6).setResizable(false);
         }
 
-        tblBloqueados.setBackground(new java.awt.Color(153, 204, 255));
+        tblBloqueados.setBackground(new java.awt.Color(255, 51, 0));
+        tblBloqueados.setForeground(new java.awt.Color(30, 30, 45));
         tblBloqueados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -243,6 +246,7 @@ public class Dashboard extends javax.swing.JFrame {
             tblBloqueados.getColumnModel().getColumn(6).setResizable(false);
         }
 
+        sldVelocidad.setBackground(new java.awt.Color(30, 30, 45));
         sldVelocidad.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         sldVelocidad.setMaximum(3000);
         sldVelocidad.setMinimum(100);
@@ -254,21 +258,21 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel1.setBackground(new java.awt.Color(204, 204, 255));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 102));
-        jLabel1.setText("COLA DE TERMINADOS");
+        jLabel1.setText("   COLA DE TERMINADOS");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel1.setOpaque(true);
 
         jLabel2.setBackground(new java.awt.Color(204, 204, 255));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 102));
-        jLabel2.setText("COLA DE LISTOS");
+        jLabel2.setText("   COLA DE LISTOS");
         jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel2.setOpaque(true);
 
         jLabel3.setBackground(new java.awt.Color(204, 204, 255));
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 102));
-        jLabel3.setText("COLA DE BLOQUEADOS");
+        jLabel3.setText("   COLA DE BLOQUEADOS");
         jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel3.setOpaque(true);
 
@@ -279,19 +283,20 @@ public class Dashboard extends javax.swing.JFrame {
         txtConsola.setRows(5);
         jScrollPane1.setViewportView(txtConsola);
 
-        lblModo.setBackground(new java.awt.Color(0, 51, 102));
+        lblModo.setBackground(new java.awt.Color(30, 30, 45));
         lblModo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblModo.setForeground(new java.awt.Color(255, 0, 0));
         lblModo.setText("Modo: KERNEL");
         lblModo.setOpaque(true);
 
-        jLabel4.setBackground(new java.awt.Color(0, 51, 102));
+        jLabel4.setBackground(new java.awt.Color(30, 30, 45));
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(204, 204, 204));
         jLabel4.setText("Velocidad");
         jLabel4.setOpaque(true);
 
-        tblSuspendidos.setBackground(new java.awt.Color(153, 204, 255));
+        tblSuspendidos.setBackground(new java.awt.Color(255, 153, 255));
+        tblSuspendidos.setForeground(new java.awt.Color(30, 30, 45));
         tblSuspendidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -325,7 +330,7 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel5.setBackground(new java.awt.Color(204, 204, 255));
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 102));
-        jLabel5.setText("COLA DE SUSPENDIDOS (Disco)");
+        jLabel5.setText("   COLA DE SUSPENDIDOS (Disco)");
         jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel5.setOpaque(true);
 
@@ -350,7 +355,7 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel6.setBackground(new java.awt.Color(204, 204, 255));
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 102));
-        jLabel6.setText("LOG DE ESTADOS");
+        jLabel6.setText("   LOG DE ESTADOS");
         jLabel6.setBorder(new javax.swing.border.MatteBorder(null));
         jLabel6.setOpaque(true);
 
@@ -363,14 +368,14 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel1)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
                         .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
-                        .addComponent(lblCPU, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(lblModo)))
+                        .addComponent(lblModo))
+                    .addComponent(lblCPU, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -381,8 +386,8 @@ public class Dashboard extends javax.swing.JFrame {
                         .addComponent(lblAlgoritmoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -398,7 +403,7 @@ public class Dashboard extends javax.swing.JFrame {
                         .addComponent(btnCargarCSV)
                         .addGap(18, 18, 18)
                         .addComponent(btnCargarJSON))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -409,36 +414,33 @@ public class Dashboard extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(14, 14, 14)
-                                .addComponent(lblCPU))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(5, 5, 5)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(cmbAlgoritmos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnCambiar)
-                                    .addComponent(btnInterrupcion)))
+                                .addComponent(lblCPU, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(14, 14, 14))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jLabel4)))
-                        .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(sldVelocidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
+                                .addGap(18, 18, 18)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblReloj)
-                            .addComponent(lblModo))
-                        .addGap(12, 12, 12)
+                            .addComponent(lblModo)
+                            .addComponent(btn20Procesos)
+                            .addComponent(btnCargarCSV)
+                            .addComponent(btnCargarJSON))
+                        .addGap(9, 9, 9)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(sldVelocidad, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblAlgoritmoActual)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btn20Procesos)
-                                .addComponent(btnCargarCSV)
-                                .addComponent(btnCargarJSON)))
-                        .addGap(16, 16, 16)
+                        .addGap(17, 17, 17)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))))
+                            .addComponent(cmbAlgoritmos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCambiar)
+                            .addComponent(btnInterrupcion))
+                        .addGap(9, 9, 9)
+                        .addComponent(lblAlgoritmoActual)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -461,42 +463,43 @@ public class Dashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarActionPerformed
-String seleccion = cmbAlgoritmos.getSelectedItem().toString();
-    Proyecto1SistemasOperativos.Algoritmo alg = Proyecto1SistemasOperativos.Algoritmo.FCFS;
+        // Cambia de tipo de algoritmo mediante selección
+        String seleccion = cmbAlgoritmos.getSelectedItem().toString();
+        Proyecto1SistemasOperativos.Algoritmo alg = Proyecto1SistemasOperativos.Algoritmo.FCFS;
 
-    switch (seleccion) {
-        case "FCFS" -> alg = Proyecto1SistemasOperativos.Algoritmo.FCFS;
-        case "Round Robin" -> alg = Proyecto1SistemasOperativos.Algoritmo.ROUND_ROBIN;
-        case "SRT" -> alg = Proyecto1SistemasOperativos.Algoritmo.SRT;
-        case "Prioridad" -> alg = Proyecto1SistemasOperativos.Algoritmo.PRIORIDAD;
-        case "EDF" -> alg = Proyecto1SistemasOperativos.Algoritmo.EDF;
-    }
+        switch (seleccion) {
+            case "FCFS" -> alg = Proyecto1SistemasOperativos.Algoritmo.FCFS;
+            case "Round Robin" -> alg = Proyecto1SistemasOperativos.Algoritmo.ROUND_ROBIN;
+            case "SRT" -> alg = Proyecto1SistemasOperativos.Algoritmo.SRT;
+            case "Prioridad" -> alg = Proyecto1SistemasOperativos.Algoritmo.PRIORIDAD;
+            case "EDF" -> alg = Proyecto1SistemasOperativos.Algoritmo.EDF;
+        }
 
-    Proyecto1SistemasOperativos.scheduler.cambiarAlgoritmo(alg);        // TODO add your handling code here:
+        Proyecto1SistemasOperativos.scheduler.cambiarAlgoritmo(alg);
     }//GEN-LAST:event_btnCambiarActionPerformed
 
     private void btnInterrupcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInterrupcionActionPerformed
-int id = (int)(Math.random() * 1000);
-    // (id, nombre, instrucciones, prioridad, deadline, arrival, etc)
-    PCB nuevo = new PCB("INT-" + id, "Interrupcion", 15, 1, 30, Proyecto1SistemasOperativos.globalClock, 3);
+        // Botón que genera la interrupción (micro-meteorito)
+        int id = (int)(Math.random() * 1000);
+        // (id, nombre, instrucciones, prioridad, deadline, arrival, etc)
+        PCB nuevo = new PCB("INT-" + id, "Interrupcion", 15, 1, 30, Proyecto1SistemasOperativos.globalClock, 3);
 
-    try {
-        Proyecto1SistemasOperativos.mutexReady.acquire();
-        // Insertamos inteligentemente según el algoritmo actual
-        switch (Proyecto1SistemasOperativos.algoritmoActual) {
-            case PRIORIDAD -> Proyecto1SistemasOperativos.readyQueue.insertByPriority(nuevo);
-            case SRT -> Proyecto1SistemasOperativos.readyQueue.insertBySRT(nuevo);
-            case EDF -> Proyecto1SistemasOperativos.readyQueue.insertByDeadline(nuevo);
-            default -> Proyecto1SistemasOperativos.readyQueue.addLast(nuevo);
-        }
-        Proyecto1SistemasOperativos.mutexReady.release();
-        JOptionPane.showMessageDialog(this, "¡Proceso Creado!");
-    } catch (Exception ex) { ex.printStackTrace(); }
+        try {
+            Proyecto1SistemasOperativos.mutexReady.acquire();
+            // Insertamos inteligentemente según el algoritmo actual
+            switch (Proyecto1SistemasOperativos.algoritmoActual) {
+                case PRIORIDAD -> Proyecto1SistemasOperativos.readyQueue.insertByPriority(nuevo);
+                case SRT -> Proyecto1SistemasOperativos.readyQueue.insertBySRT(nuevo);
+                case EDF -> Proyecto1SistemasOperativos.readyQueue.insertByDeadline(nuevo);
+                default -> Proyecto1SistemasOperativos.readyQueue.addLast(nuevo);
+            }
+            Proyecto1SistemasOperativos.mutexReady.release();
+        } catch (Exception ex) { ex.printStackTrace(); }
     }//GEN-LAST:event_btnInterrupcionActionPerformed
 
     private void sldVelocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldVelocidadStateChanged
-// Actualizamos la variable global con el valor que elija el usuario en la barra
-Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();        // TODO add your handling code here:
+        // Actualizamos la variable global con el valor que elija el usuario en la barra
+        Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();        // TODO add your handling code here:
     }//GEN-LAST:event_sldVelocidadStateChanged
 
     private void btn20ProcesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn20ProcesosActionPerformed
@@ -536,6 +539,7 @@ Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();      
     }//GEN-LAST:event_btn20ProcesosActionPerformed
 
     private void btnCargarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarCSVActionPerformed
+        // Botón para cargar el CSV
         javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
         fileChooser.setDialogTitle("Seleccionar archivo CSV");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos CSV (*.csv)", "csv"));
@@ -590,6 +594,7 @@ Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();      
     }//GEN-LAST:event_btnCargarCSVActionPerformed
 
     private void btnCargarJSONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarJSONActionPerformed
+        // Botón para cargar el JSON
         javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
         fileChooser.setDialogTitle("Seleccionar archivo JSON");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos JSON (*.json)", "json"));
@@ -599,11 +604,9 @@ Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();      
             java.io.File archivo = fileChooser.getSelectedFile();
             
             try {
-                // LEER EL ARCHIVO COMO TEXTO COMPLETO
                 String contenido = new String(java.nio.file.Files.readAllBytes(archivo.toPath()));
                 
-                // NOTA: Este bloque usa la librería 'org.json'. 
-                // Necesitas tenerla instalada en tu proyecto (dependencia Maven/Gradle o el archivo .jar)
+                // NOTA: Se usa la librería 'org.json'. 
                 org.json.JSONArray arregloJson = new org.json.JSONArray(contenido);
                 
                 Proyecto1SistemasOperativos.mutexReady.acquire(); // Bloqueamos la cola
@@ -697,20 +700,21 @@ Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();      
     private javax.swing.JTextArea txtConsola;
     // End of variables declaration//GEN-END:variables
 
+    // Actualiza la información de los JLabel, JTable y Colas en tiempo real
     private void actualizarInformacion() {
             // 1. Reloj
             lblReloj.setText("Reloj: " + Proyecto1SistemasOperativos.globalClock);
 
-            // 2. CPU y Modo
+            // 2. CPU y Modo (Cambia de color por modo)
             PCB p = Proyecto1SistemasOperativos.runningProcess;
             if (p != null) {
-                lblCPU.setText("CPU: " + p.getNombre() + " (ID:" + p.getId() + ")");
-                lblModo.setText("MODO: USUARIO"); // El CPU está ocupado por un proceso
-                lblModo.setForeground(new java.awt.Color(0, 153, 0)); // Verde
+                lblCPU.setText("  CPU: " + p.getNombre() + " (ID:" + p.getId() + ")");
+                lblModo.setText("MODO: USUARIO");
+                lblModo.setForeground(new java.awt.Color(0, 153, 0));
             } else {
-                lblCPU.setText("CPU: IDLE");
-                lblModo.setText("MODO: KERNEL"); // El OS está buscando qué hacer
-                lblModo.setForeground(java.awt.Color.RED); // Rojo o Azul
+                lblCPU.setText("  CPU: IDLE");
+                lblModo.setText("MODO: KERNEL");
+                lblModo.setForeground(java.awt.Color.RED);
             }
 
             // 3. Algoritmo
@@ -721,7 +725,7 @@ Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();      
             // --- COLA DE LISTOS ---
             if (Proyecto1SistemasOperativos.mutexReady.tryAcquire()) {
                 DefaultTableModel modeloListos = (DefaultTableModel) tblListos.getModel();
-                modeloListos.setRowCount(0); // Esto limpia la tabla antes de reescribirla
+                modeloListos.setRowCount(0);
 
                 for (int i = 0; i < Proyecto1SistemasOperativos.readyQueue.getSize(); i++) {
                     PCB pcb = Proyecto1SistemasOperativos.readyQueue.get(i);
@@ -776,9 +780,9 @@ Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();      
 
                 Proyecto1SistemasOperativos.mutexSuspended.release();
             }
-    } // FIN DEL MÉTODO actualizarInformacion()
+    }
 
-    // CLASE PARA LA CONSOLA
+    // Clase para el texto de consola
     class CustomOutputStream extends java.io.OutputStream {
         private javax.swing.JTextArea textArea;
 
@@ -788,9 +792,8 @@ Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();      
 
         @Override
         public void write(int b) {
-            // Escribe el texto en el JTextArea
             textArea.append(String.valueOf((char)b));
-            // Hace que el scroll baje automáticamente para ver el texto más reciente
+            // Scroll automatico
             textArea.setCaretPosition(textArea.getDocument().getLength());
         }
     }

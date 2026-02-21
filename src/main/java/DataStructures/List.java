@@ -7,7 +7,7 @@ package DataStructures;
 
 /**
  *
- * @author Luigi
+ * @author Luigi Lauricella & Sebastian Gonzalez
  */
 public class List {
     private Node head;
@@ -63,10 +63,10 @@ public class List {
         size++;
     }
     
-    // Insertar ordenado por Prioridad (Asumiendo 1 = Mayor Prioridad)
+    // Insertar ordenado por Prioridad (de menor a mayor)
     public void insertByPriority(PCB pcb) {
         Node newNode = new Node(pcb);
-        // Si la lista está vacía o el nuevo tiene MEJOR prioridad (número menor) que el primero
+        // Si la lista está vacía o el nuevo tiene mayor prioridad que el primero
         if (head == null || pcb.getPrioridad() < head.pcb.getPrioridad()) {
             newNode.next = head;
             head = newNode;
@@ -111,7 +111,7 @@ public class List {
         }
         size++;
     }
-    // Método para "espiar" el primer elemento sin sacarlo de la lista
+    // Método para observar el primer elemento sin modificar la lista
     public PCB peek() {
         if (head == null) {
             return null;

@@ -8,13 +8,13 @@ import com.mycompany.proyecto1.sistemasoperativos.Proyecto1SistemasOperativos;
 
 /**
  *
- * @author Luigi
+ * @author Luigi Lauricella & Sebastian Gonzalez
  */
 public class Clock extends Thread {
     private int duration;
     private boolean running;
 
-    // Constructor simplificado: solo recibe la duración
+    // Constructor
     public Clock(int duration) {
         this.duration = duration;
         this.running = true;
@@ -26,7 +26,7 @@ public class Clock extends Thread {
             try {
                 Thread.sleep(duration);
                 
-                // Usamos los semáforos estáticos de la clase principal
+                // Semáforos estáticos
                 Proyecto1SistemasOperativos.mutexClock.acquire();
                 Proyecto1SistemasOperativos.globalClock++;
                 Proyecto1SistemasOperativos.mutexClock.release();
@@ -39,7 +39,8 @@ public class Clock extends Thread {
             }
         }
     }
-
+    
+    // Ejecutamos el ciclo del reloj sincronizado
     private void executeCycle() {
         Proyecto1SistemasOperativos.mutexCPU.acquire();
         PCB p = Proyecto1SistemasOperativos.runningProcess;

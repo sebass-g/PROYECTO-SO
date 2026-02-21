@@ -6,7 +6,7 @@ package DataStructures;
 
 /**
  *
- * @author Luigi
+ * @author Luigi Lauricella & Sebastian Gonzalez
  */
 public class Semaphore {
     private int value;
@@ -15,7 +15,7 @@ public class Semaphore {
         this.value = initialValue;
     }
 
-    // Bloquea si no hay recursos (Mantiene tu lógica original)
+    // Bloquea si no hay recursos
     public synchronized void acquire() {
         while (value <= 0) {
             try {
@@ -27,7 +27,7 @@ public class Semaphore {
         value--;
     }
 
-    // Libera un recurso (Mantiene tu lógica original)
+    // Libera un recurso
     public synchronized void release() {
         value++;
         notify();

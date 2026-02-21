@@ -5,8 +5,11 @@ import DataStructures.PCB;
 import DataStructures.Clock;
 import DataStructures.Semaphore;
 
+/**
+ *
+ * @author Luigi Lauricella & Sebastian Gonzalez
+ */
 public class Proyecto1SistemasOperativos {
-
     // --- SEMÁFOROS ---
     public static Semaphore mutexReady = new Semaphore(1);
     public static Semaphore mutexBlocked = new Semaphore(1);

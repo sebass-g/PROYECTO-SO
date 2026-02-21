@@ -8,7 +8,7 @@ import DataStructures.PCB;
 
 /**
  *
- * @author Luigi
+ * @author Luigi Lauricella & Sebastian Gonzalez
  */
 public class ManejadorES extends Thread {
     private PCB proceso;

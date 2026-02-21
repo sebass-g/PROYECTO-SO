@@ -8,7 +8,7 @@ package DataStructures;
 
 /**
  *
- * @author Luigi
+ * @author Luigi Lauricella & Sebastian Gonzalez
  */
 public class PCB {
     // Atributos básicos requeridos
@@ -25,7 +25,7 @@ public class PCB {
     private int deadline; // Tiempo límite de finalización
     private int tiempoLlegada;
     
-    // Para manejo de E/S [cite: 49]
+    // Para manejo de E/S
     private int ciclosParaExcepcion; 
     private int ciclosParaSatisfacer;
     

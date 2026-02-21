@@ -6,6 +6,10 @@ package com.mycompany.proyecto1.sistemasoperativos;
 
 import DataStructures.PCB;
 
+/**
+ *
+ * @author Luigi Lauricella & Sebastian Gonzalez
+ */
 public class InterruptGenerator extends Thread {
     private boolean active = true;
 
@@ -13,7 +17,7 @@ public class InterruptGenerator extends Thread {
     public void run() {
         while (active) {
             try {
-                // Esperar entre 10 y 25 segundos para el siguiente evento
+                // Esperar entre 10 y 25 segundos
                 int waitTime = 10000 + (int) (Math.random() * 15001);
                 Thread.sleep(waitTime);
 

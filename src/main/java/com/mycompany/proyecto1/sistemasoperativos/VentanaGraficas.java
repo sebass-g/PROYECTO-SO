@@ -6,7 +6,7 @@ package com.mycompany.proyecto1.sistemasoperativos;
 
 /**
  *
- * @author Luigi
+ * @author Luigi Lauricella & Sebastian Gonzalez
  */
 public class VentanaGraficas extends javax.swing.JFrame {
     
@@ -19,15 +19,15 @@ public class VentanaGraficas extends javax.swing.JFrame {
      */
     public VentanaGraficas() {
         initComponents();
-        this.setTitle("Métricas del Sistema en Tiempo Real"); // Título de la ventana
-        this.setLocationRelativeTo(null); // Centrar en pantalla
+        this.setTitle("Métricas del Sistema en Tiempo Real");
+        this.setLocationRelativeTo(null);
         
-        // Iniciamos la gráfica al abrir esta ventana
+        // Iniciamos la gráfica
         inicializarGrafica();
         iniciarActualizadorGrafico();
     }
 
-    // --- 1. INICIALIZAR GRÁFICA (AHORA MÁS BONITA Y MODERNA) ---
+    // --- 1. INICIALIZAR GRÁFICA ---
     private void inicializarGrafica() {
         dataset = new org.jfree.data.category.DefaultCategoryDataset();
         
@@ -38,45 +38,46 @@ public class VentanaGraficas extends javax.swing.JFrame {
 
         barChart = org.jfree.chart.ChartFactory.createBarChart(
                 "Rendimiento del Sistema", 
-                "",                   // Sin texto abajo para que se vea más minimalista
-                "Valor Numérico",     // Etiqueta Eje Y
+                "",
+                "Valor Numérico",
                 dataset, 
                 org.jfree.chart.plot.PlotOrientation.VERTICAL, 
-                true,  // Leyenda activada para ver qué es cada color
+                true,
                 true, 
                 false
         );
 
         // ================= ESTILIZADO DE LA GRÁFICA =================
-        // 1. Fondo exterior e interior limpios
+        // Limpieza de tabla
         barChart.setBackgroundPaint(java.awt.Color.WHITE); 
         barChart.getTitle().setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 18));
 
+        // Formateo de color de tabla
         org.jfree.chart.plot.CategoryPlot plot = barChart.getCategoryPlot();
         plot.setBackgroundPaint(new java.awt.Color(248, 249, 250)); // Fondo gris súper clarito
         plot.setDomainGridlinePaint(java.awt.Color.WHITE);
         plot.setRangeGridlinePaint(java.awt.Color.WHITE);
-        plot.setOutlineVisible(false); // Quita el recuadro negro feo
+        plot.setOutlineVisible(false);
         
-        // 2. Fuentes modernas para los ejes
+        // Formato de letra
         org.jfree.chart.axis.NumberAxis rangeAxis = (org.jfree.chart.axis.NumberAxis) plot.getRangeAxis();
         rangeAxis.setTickLabelFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 12));
         rangeAxis.setLabelFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 14));
         
-        // 3. Colores personalizados y diseño de las barras
+        // Formato de diseño de barra
         org.jfree.chart.renderer.category.BarRenderer renderer = (org.jfree.chart.renderer.category.BarRenderer) plot.getRenderer();
         
-        // Asignamos colores sólidos modernos (Azul, Amarillo intenso, Verde esmeralda)
+        // Asignamos colores
         renderer.setSeriesPaint(0, new java.awt.Color(52, 152, 219));  
         renderer.setSeriesPaint(1, new java.awt.Color(243, 156, 18));  
         renderer.setSeriesPaint(2, new java.awt.Color(46, 204, 113));  
         
-        renderer.setShadowVisible(false); // Quitar las sombras antiguas
-        renderer.setItemMargin(0.10);     // Hacer las barras un poco más anchas
+        renderer.setShadowVisible(false);
+        renderer.setItemMargin(0.10);
 
-        // 4. Mostrar los números LIMITADOS encima de las barras
+        // Mostramos los números limitados
         renderer.setDefaultItemLabelGenerator(new org.jfree.chart.labels.StandardCategoryItemLabelGenerator(
-                "{2}", new java.text.DecimalFormat("0.00"))); // Limita visualmente a 2 decimales
+                "{2}", new java.text.DecimalFormat("0.00")));
         renderer.setDefaultItemLabelsVisible(true);
         renderer.setDefaultItemLabelFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
         // ==============================================================
@@ -117,7 +118,7 @@ public class VentanaGraficas extends javax.swing.JFrame {
         return new double[]{throughput, esperaPromedio, tasaExito};
     }
 
-    // --- 3. HILO ACTUALIZADOR (CON LIMITADOR DE DECIMALES) ---
+    // --- 3. HILO ACTUALIZADOR ---
     private void iniciarActualizadorGrafico() {
         Thread actualizador = new Thread(() -> {
             while (true) {
@@ -125,8 +126,7 @@ public class VentanaGraficas extends javax.swing.JFrame {
                     Thread.sleep(1000); 
                     double[] metricas = calcularMetricas();
                     
-                    // 1. LIMITAMOS los valores matemáticamente a 2 decimales
-                    // 2. Escalamos el Throughput (x100) para que la barra no sea microscópica al lado de la Tasa de Éxito
+                    // En este caso se tuvo que aumentar el thorughput porque sino no se veia en el formato de gráfica
                     double throughputEscalado = Math.round((metricas[0] * 100) * 100.0) / 100.0; 
                     double esperaLimitada = Math.round(metricas[1] * 100.0) / 100.0;
                     double exitoLimitado = Math.round(metricas[2] * 100.0) / 100.0;
@@ -161,7 +161,7 @@ public class VentanaGraficas extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setText("GRÁFICA DEL SISTEMA");
+        jLabel5.setText("   GRÁFICA DEL SISTEMA");
 
         javax.swing.GroupLayout panelGraficaLayout = new javax.swing.GroupLayout(panelGrafica);
         panelGrafica.setLayout(panelGraficaLayout);
@@ -182,7 +182,7 @@ public class VentanaGraficas extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelGrafica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
