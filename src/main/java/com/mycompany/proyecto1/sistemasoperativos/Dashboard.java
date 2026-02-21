@@ -68,8 +68,15 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtConsola = new javax.swing.JTextArea();
-        jLabel4 = new javax.swing.JLabel();
         lblModo = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblSuspendidos = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        btn20Procesos = new javax.swing.JButton();
+        btnCargarCSV = new javax.swing.JButton();
+        btnCargarJSON = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
         tblListos1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -102,23 +109,23 @@ public class Dashboard extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lblReloj.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblReloj.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblReloj.setText("Reloj: 0");
 
-        lblCPU.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblCPU.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblCPU.setText("CPU: IDLE");
 
         lblAlgoritmoActual.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblAlgoritmoActual.setText("Algoritmo: FCFS");
 
-        cmbAlgoritmos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        cmbAlgoritmos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         cmbAlgoritmos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FCFS", "Round Robin", "SRT", "Prioridad", "EDF" }));
 
-        btnCambiar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnCambiar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnCambiar.setText("Cambiar");
         btnCambiar.addActionListener(this::btnCambiarActionPerformed);
 
-        btnInterrupcion.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnInterrupcion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnInterrupcion.setText("Crear Interrupción");
         btnInterrupcion.addActionListener(this::btnInterrupcionActionPerformed);
 
@@ -210,6 +217,7 @@ public class Dashboard extends javax.swing.JFrame {
             tblBloqueados.getColumnModel().getColumn(6).setResizable(false);
         }
 
+        sldVelocidad.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         sldVelocidad.setMaximum(3000);
         sldVelocidad.setMinimum(100);
         sldVelocidad.setPaintLabels(true);
@@ -233,12 +241,60 @@ public class Dashboard extends javax.swing.JFrame {
         txtConsola.setRows(5);
         jScrollPane1.setViewportView(txtConsola);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel4.setText("LOG DE EVENTOS");
-
         lblModo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblModo.setForeground(new java.awt.Color(255, 0, 0));
         lblModo.setText("Modo: KERNEL");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setText("Velocidad");
+
+        tblSuspendidos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nombre", "Status", "PC", "MAR", "Prioridad", "Deadline"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblSuspendidos);
+        if (tblSuspendidos.getColumnModel().getColumnCount() > 0) {
+            tblSuspendidos.getColumnModel().getColumn(0).setResizable(false);
+            tblSuspendidos.getColumnModel().getColumn(1).setResizable(false);
+            tblSuspendidos.getColumnModel().getColumn(2).setResizable(false);
+            tblSuspendidos.getColumnModel().getColumn(3).setResizable(false);
+            tblSuspendidos.getColumnModel().getColumn(4).setResizable(false);
+            tblSuspendidos.getColumnModel().getColumn(5).setResizable(false);
+            tblSuspendidos.getColumnModel().getColumn(6).setResizable(false);
+        }
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setText("COLA DE SUSPENDIDOS (Disco)");
+
+        btn20Procesos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn20Procesos.setText("+ 20 Procesos Aleatorios");
+        btn20Procesos.addActionListener(this::btn20ProcesosActionPerformed);
+
+        btnCargarCSV.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCargarCSV.setText("Cargar CSV");
+        btnCargarCSV.addActionListener(this::btnCargarCSVActionPerformed);
+
+        btnCargarJSON.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCargarJSON.setText("Cargar JSON");
+        btnCargarJSON.addActionListener(this::btnCargarJSONActionPerformed);
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setText("LOG DE ESTADOS");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -247,72 +303,100 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sldVelocidad, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+                        .addComponent(lblCPU, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblModo)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addGap(36, 36, 36)
+                            .addComponent(sldVelocidad, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))
+                        .addComponent(lblAlgoritmoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel3))
+                .addGap(53, 53, 53)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cmbAlgoritmos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
-                        .addComponent(btnCambiar)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblModo)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel3)
-                        .addComponent(lblCPU, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1)
-                        .addComponent(jLabel4)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblAlgoritmoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnInterrupcion, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap(16, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCambiar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnInterrupcion))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btn20Procesos)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCargarCSV)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCargarJSON))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblCPU)
-                    .addComponent(lblReloj, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblAlgoritmoActual)
-                        .addComponent(sldVelocidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblModo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(39, 39, 39)
+                                .addGap(14, 14, 14)
+                                .addComponent(lblCPU))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(5, 5, 5)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(cmbAlgoritmos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnCambiar)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(btnInterrupcion)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(25, 25, 25))
+                                    .addComponent(btnCambiar)
+                                    .addComponent(btnInterrupcion)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel4)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblReloj)
+                            .addComponent(lblModo))
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(sldVelocidad, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblAlgoritmoActual)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btn20Procesos)
+                                .addComponent(btnCargarCSV)
+                                .addComponent(btnCargarJSON)))
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         pack();
@@ -357,6 +441,147 @@ int id = (int)(Math.random() * 1000);
 Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();        // TODO add your handling code here:
     }//GEN-LAST:event_sldVelocidadStateChanged
 
+    private void btn20ProcesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn20ProcesosActionPerformed
+        try {
+        // 1. Bloqueamos la cola de listos para evitar inconsistencias con el CPU
+        Proyecto1SistemasOperativos.mutexReady.acquire();
+        
+        // 2. Generamos los 20 procesos
+        for (int i = 0; i < 20; i++) {
+            int idAleatorio = (int) (Math.random() * 10000);
+            int inst = 10 + (int) (Math.random() * 21); // Instrucciones entre 10 y 30
+            int prio = 1 + (int) (Math.random() * 3);   // Prioridad entre 1 y 3
+            
+            // Deadline a futuro basado en el reloj actual
+            int dline = Proyecto1SistemasOperativos.globalClock + 50 + (int) (Math.random() * 51); 
+            
+            // Creamos el PCB con tu constructor
+            PCB nuevoProceso = new PCB("P" + idAleatorio, "Mision_Rnd", inst, prio, dline, 5, 3);
+            
+            // 3. Insertamos respetando el algoritmo actual
+            switch (Proyecto1SistemasOperativos.algoritmoActual) {
+                case PRIORIDAD -> Proyecto1SistemasOperativos.readyQueue.insertByPriority(nuevoProceso);
+                case SRT -> Proyecto1SistemasOperativos.readyQueue.insertBySRT(nuevoProceso);
+                case EDF -> Proyecto1SistemasOperativos.readyQueue.insertByDeadline(nuevoProceso);
+                default -> Proyecto1SistemasOperativos.readyQueue.addLast(nuevoProceso);
+            }
+        }
+        
+        // 4. Soltamos el semáforo para que el Scheduler siga trabajando
+        Proyecto1SistemasOperativos.mutexReady.release();
+        
+        System.out.println("> 20 Procesos aleatorios inyectados a la RAM exitosamente.");
+        
+    } catch (Exception ex) { 
+        System.err.println("Error al inyectar procesos: " + ex.getMessage());
+    }
+    }//GEN-LAST:event_btn20ProcesosActionPerformed
+
+    private void btnCargarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarCSVActionPerformed
+        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        fileChooser.setDialogTitle("Seleccionar archivo CSV");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos CSV (*.csv)", "csv"));
+
+        int seleccion = fileChooser.showOpenDialog(this);
+        if (seleccion == javax.swing.JFileChooser.APPROVE_OPTION) {
+            java.io.File archivo = fileChooser.getSelectedFile();
+            
+            try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(archivo))) {
+                String linea;
+                boolean primeraLinea = true; // Para saltar los encabezados si los hay
+                
+                Proyecto1SistemasOperativos.mutexReady.acquire(); // Bloqueamos la cola
+                
+                while ((linea = br.readLine()) != null) {
+                    if (primeraLinea) {
+                        primeraLinea = false;
+                        continue; // Saltamos la primera línea de encabezados
+                    }
+                    
+                    String[] datos = linea.split(","); // Separamos por coma
+                    if (datos.length >= 4) {
+                        // Asumiendo el orden: nombre, instrucciones, prioridad, deadline
+                        String nombre = datos[0].trim();
+                        int inst = Integer.parseInt(datos[1].trim());
+                        int prio = Integer.parseInt(datos[2].trim());
+                        int dline = Integer.parseInt(datos[3].trim());
+                        
+                        int idAleatorio = (int) (Math.random() * 10000);
+                        
+                        // Creamos el proceso (ajusta los últimos números si tu constructor es distinto)
+                        PCB nuevoProceso = new PCB("P" + idAleatorio, nombre, inst, prio, dline, 5, 3);
+                        
+                        // Insertamos según el algoritmo actual
+                        switch (Proyecto1SistemasOperativos.algoritmoActual) {
+                            case PRIORIDAD -> Proyecto1SistemasOperativos.readyQueue.insertByPriority(nuevoProceso);
+                            case SRT -> Proyecto1SistemasOperativos.readyQueue.insertBySRT(nuevoProceso);
+                            case EDF -> Proyecto1SistemasOperativos.readyQueue.insertByDeadline(nuevoProceso);
+                            default -> Proyecto1SistemasOperativos.readyQueue.addLast(nuevoProceso);
+                        }
+                    }
+                }
+                Proyecto1SistemasOperativos.mutexReady.release(); // Soltamos la cola
+                
+                javax.swing.JOptionPane.showMessageDialog(this, "CSV cargado exitosamente.");
+                System.out.println("> Procesos del CSV inyectados a la RAM.");
+                
+            } catch (Exception ex) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al leer el CSV: " + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnCargarCSVActionPerformed
+
+    private void btnCargarJSONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarJSONActionPerformed
+        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        fileChooser.setDialogTitle("Seleccionar archivo JSON");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos JSON (*.json)", "json"));
+
+        int seleccion = fileChooser.showOpenDialog(this);
+        if (seleccion == javax.swing.JFileChooser.APPROVE_OPTION) {
+            java.io.File archivo = fileChooser.getSelectedFile();
+            
+            try {
+                // LEER EL ARCHIVO COMO TEXTO COMPLETO
+                String contenido = new String(java.nio.file.Files.readAllBytes(archivo.toPath()));
+                
+                // NOTA: Este bloque usa la librería 'org.json'. 
+                // Necesitas tenerla instalada en tu proyecto (dependencia Maven/Gradle o el archivo .jar)
+                org.json.JSONArray arregloJson = new org.json.JSONArray(contenido);
+                
+                Proyecto1SistemasOperativos.mutexReady.acquire(); // Bloqueamos la cola
+                
+                for (int i = 0; i < arregloJson.length(); i++) {
+                    org.json.JSONObject obj = arregloJson.getJSONObject(i);
+                    
+                    String nombre = obj.getString("nombre");
+                    int inst = obj.getInt("instrucciones");
+                    int prio = obj.getInt("prioridad");
+                    int dline = obj.getInt("deadline");
+                    
+                    int idAleatorio = (int) (Math.random() * 10000);
+                    
+                    // Creamos el proceso
+                    PCB nuevoProceso = new PCB("P" + idAleatorio, nombre, inst, prio, dline, 5, 3);
+                    
+                    // Insertamos según el algoritmo actual
+                    switch (Proyecto1SistemasOperativos.algoritmoActual) {
+                        case PRIORIDAD -> Proyecto1SistemasOperativos.readyQueue.insertByPriority(nuevoProceso);
+                        case SRT -> Proyecto1SistemasOperativos.readyQueue.insertBySRT(nuevoProceso);
+                        case EDF -> Proyecto1SistemasOperativos.readyQueue.insertByDeadline(nuevoProceso);
+                        default -> Proyecto1SistemasOperativos.readyQueue.addLast(nuevoProceso);
+                    }
+                }
+                
+                Proyecto1SistemasOperativos.mutexReady.release(); // Soltamos la cola
+                javax.swing.JOptionPane.showMessageDialog(this, "JSON cargado exitosamente.");
+                System.out.println("> Procesos del JSON inyectados a la RAM.");
+                
+            } catch (Exception ex) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error al leer el JSON: " + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnCargarJSONActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -383,16 +608,22 @@ Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();      
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn20Procesos;
     private javax.swing.JButton btnCambiar;
+    private javax.swing.JButton btnCargarCSV;
+    private javax.swing.JButton btnCargarJSON;
     private javax.swing.JButton btnInterrupcion;
     private javax.swing.JComboBox<String> cmbAlgoritmos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JLabel lblAlgoritmoActual;
@@ -403,75 +634,93 @@ Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();      
     private javax.swing.JTable tblBloqueados;
     private javax.swing.JTable tblListos;
     private javax.swing.JTable tblListos1;
+    private javax.swing.JTable tblSuspendidos;
     private javax.swing.JTable tblTerminados;
     private javax.swing.JTextArea txtConsola;
     // End of variables declaration//GEN-END:variables
 
     private void actualizarInformacion() {
-        // 1. Reloj
-        lblReloj.setText("Reloj: " + Proyecto1SistemasOperativos.globalClock);
+            // 1. Reloj
+            lblReloj.setText("Reloj: " + Proyecto1SistemasOperativos.globalClock);
 
-        // 2. CPU y Modo
-        PCB p = Proyecto1SistemasOperativos.runningProcess;
-        if (p != null) {
-            lblCPU.setText("CPU: " + p.getNombre() + " (ID:" + p.getId() + ")");
-            lblModo.setText("MODO: USUARIO"); // El CPU está ocupado por un proceso
-            lblModo.setForeground(new java.awt.Color(0, 153, 0)); // Verde
-        } else {
-            lblCPU.setText("CPU: IDLE");
-            lblModo.setText("MODO: KERNEL"); // El OS está buscando qué hacer
-            lblModo.setForeground(java.awt.Color.RED); // Rojo o Azul
-        }
+            // 2. CPU y Modo
+            PCB p = Proyecto1SistemasOperativos.runningProcess;
+            if (p != null) {
+                lblCPU.setText("CPU: " + p.getNombre() + " (ID:" + p.getId() + ")");
+                lblModo.setText("MODO: USUARIO"); // El CPU está ocupado por un proceso
+                lblModo.setForeground(new java.awt.Color(0, 153, 0)); // Verde
+            } else {
+                lblCPU.setText("CPU: IDLE");
+                lblModo.setText("MODO: KERNEL"); // El OS está buscando qué hacer
+                lblModo.setForeground(java.awt.Color.RED); // Rojo o Azul
+            }
 
-        // 3. Algoritmo
-        lblAlgoritmoActual.setText("Algoritmo: " + Proyecto1SistemasOperativos.algoritmoActual);
+            // 3. Algoritmo
+            lblAlgoritmoActual.setText("Algoritmo: " + Proyecto1SistemasOperativos.algoritmoActual);
 
-        // 4. Colas (Ahora usando JTables en lugar de TextAreas)
+            // 4. Colas (Ahora usando JTables en lugar de TextAreas)
 
-        // --- COLA DE LISTOS ---
-        if (Proyecto1SistemasOperativos.mutexReady.tryAcquire()) {
-            DefaultTableModel modeloListos = (DefaultTableModel) tblListos.getModel();
-            modeloListos.setRowCount(0); // Esto limpia la tabla antes de reescribirla
+            // --- COLA DE LISTOS ---
+            if (Proyecto1SistemasOperativos.mutexReady.tryAcquire()) {
+                DefaultTableModel modeloListos = (DefaultTableModel) tblListos.getModel();
+                modeloListos.setRowCount(0); // Esto limpia la tabla antes de reescribirla
 
-            // NOTA: Ajusta ".getSize()" y ".get(i)" según como se llamen en tu clase de Colas
-            for (int i = 0; i < Proyecto1SistemasOperativos.readyQueue.getSize(); i++) {
-                PCB pcb = Proyecto1SistemasOperativos.readyQueue.get(i);
-                modeloListos.addRow(new Object[]{
+                for (int i = 0; i < Proyecto1SistemasOperativos.readyQueue.getSize(); i++) {
+                    PCB pcb = Proyecto1SistemasOperativos.readyQueue.get(i);
+                    modeloListos.addRow(new Object[]{
+                        pcb.getId(), pcb.getNombre(), pcb.getStatus(), 
+                        pcb.getPc(), pcb.getMar(), pcb.getPrioridad(), pcb.getDeadline()
+                    });
+                }
+                Proyecto1SistemasOperativos.mutexReady.release();
+            }
+
+            // --- COLA DE BLOQUEADOS ---
+            if (Proyecto1SistemasOperativos.mutexBlocked.tryAcquire()) {
+                DefaultTableModel modeloBloqueados = (DefaultTableModel) tblBloqueados.getModel();
+                modeloBloqueados.setRowCount(0);
+
+                for (int i = 0; i < Proyecto1SistemasOperativos.blockedQueue.getSize(); i++) {
+                    PCB pcb = Proyecto1SistemasOperativos.blockedQueue.get(i);
+                    modeloBloqueados.addRow(new Object[]{
+                        pcb.getId(), pcb.getNombre(), pcb.getStatus(), 
+                        pcb.getPc(), pcb.getMar(), pcb.getPrioridad(), pcb.getDeadline()
+                    });
+                }
+                Proyecto1SistemasOperativos.mutexBlocked.release();
+            }
+
+            // --- COLA DE TERMINADOS ---
+            DefaultTableModel modeloTerminados = (DefaultTableModel) tblTerminados.getModel();
+            modeloTerminados.setRowCount(0);
+
+            for (int i = 0; i < Proyecto1SistemasOperativos.finishedQueue.getSize(); i++) {
+                PCB pcb = Proyecto1SistemasOperativos.finishedQueue.get(i);
+                modeloTerminados.addRow(new Object[]{
                     pcb.getId(), pcb.getNombre(), pcb.getStatus(), 
                     pcb.getPc(), pcb.getMar(), pcb.getPrioridad(), pcb.getDeadline()
                 });
             }
-            Proyecto1SistemasOperativos.mutexReady.release();
-        }
 
-        // --- COLA DE BLOQUEADOS ---
-        if (Proyecto1SistemasOperativos.mutexBlocked.tryAcquire()) {
-            DefaultTableModel modeloBloqueados = (DefaultTableModel) tblBloqueados.getModel();
-            modeloBloqueados.setRowCount(0);
+            // --- COLA DE SUSPENDIDOS (Listos-Suspendidos + Bloqueados-Suspendidos) ---
+            if (Proyecto1SistemasOperativos.mutexSuspended.tryAcquire()) {
+                DefaultTableModel modeloSuspendidos = (DefaultTableModel) tblSuspendidos.getModel();
+                modeloSuspendidos.setRowCount(0); // Limpiamos la tabla
 
-            for (int i = 0; i < Proyecto1SistemasOperativos.blockedQueue.getSize(); i++) {
-                PCB pcb = Proyecto1SistemasOperativos.blockedQueue.get(i);
-                modeloBloqueados.addRow(new Object[]{
-                    pcb.getId(), pcb.getNombre(), pcb.getStatus(), 
-                    pcb.getPc(), pcb.getMar(), pcb.getPrioridad(), pcb.getDeadline()
-                });
+                // 1. Mostramos los procesos en Listo-Suspendido
+                for (int i = 0; i < Proyecto1SistemasOperativos.readySuspendedQueue.getSize(); i++) {
+                    PCB pcb = Proyecto1SistemasOperativos.readySuspendedQueue.get(i);
+                    modeloSuspendidos.addRow(new Object[]{
+                        pcb.getId(), pcb.getNombre(), pcb.getStatus(), 
+                        pcb.getPc(), pcb.getMar(), pcb.getPrioridad(), pcb.getDeadline()
+                    });
+                }
+
+                Proyecto1SistemasOperativos.mutexSuspended.release();
             }
-            Proyecto1SistemasOperativos.mutexBlocked.release();
-        }
+    } // FIN DEL MÉTODO actualizarInformacion()
 
-        // --- COLA DE TERMINADOS ---
-        DefaultTableModel modeloTerminados = (DefaultTableModel) tblTerminados.getModel();
-        modeloTerminados.setRowCount(0);
-
-        for (int i = 0; i < Proyecto1SistemasOperativos.finishedQueue.getSize(); i++) {
-            PCB pcb = Proyecto1SistemasOperativos.finishedQueue.get(i);
-            modeloTerminados.addRow(new Object[]{
-                pcb.getId(), pcb.getNombre(), pcb.getStatus(), 
-                pcb.getPc(), pcb.getMar(), pcb.getPrioridad(), pcb.getDeadline()
-            });
-        }
-    }
-    // --- CLASE MÁGICA PARA REDIRIGIR LA CONSOLA ---
+    // CLASE PARA LA CONSOLA
     class CustomOutputStream extends java.io.OutputStream {
         private javax.swing.JTextArea textArea;
 
@@ -487,4 +736,5 @@ Proyecto1SistemasOperativos.velocidadSimulacion = sldVelocidad.getValue();      
             textArea.setCaretPosition(textArea.getDocument().getLength());
         }
     }
+
 }
