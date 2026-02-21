@@ -24,6 +24,13 @@ public class Dashboard extends javax.swing.JFrame {
     public Dashboard() {
         initComponents();
         
+        // Color del background
+    this.getContentPane().setBackground(new java.awt.Color(30, 30, 45));
+    
+    // Para que la consola también combine:
+    txtConsola.setBackground(new java.awt.Color(20, 20, 30));
+    
+   
         // Redirigir la consola al JTextArea (txtConsola)
         java.io.PrintStream printStream = new java.io.PrintStream(new CustomOutputStream(txtConsola));
         System.setOut(printStream);
@@ -108,27 +115,44 @@ public class Dashboard extends javax.swing.JFrame {
         }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(30, 30, 45));
 
+        lblReloj.setBackground(new java.awt.Color(0, 51, 102));
         lblReloj.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblReloj.setForeground(new java.awt.Color(204, 204, 204));
         lblReloj.setText("Reloj: 0");
+        lblReloj.setOpaque(true);
 
+        lblCPU.setBackground(new java.awt.Color(204, 204, 255));
         lblCPU.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblCPU.setForeground(new java.awt.Color(0, 0, 102));
         lblCPU.setText("CPU: IDLE");
+        lblCPU.setOpaque(true);
 
+        lblAlgoritmoActual.setBackground(new java.awt.Color(0, 51, 102));
         lblAlgoritmoActual.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblAlgoritmoActual.setForeground(new java.awt.Color(204, 204, 204));
         lblAlgoritmoActual.setText("Algoritmo: FCFS");
+        lblAlgoritmoActual.setOpaque(true);
 
+        cmbAlgoritmos.setBackground(new java.awt.Color(102, 102, 255));
         cmbAlgoritmos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        cmbAlgoritmos.setForeground(new java.awt.Color(204, 204, 204));
         cmbAlgoritmos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FCFS", "Round Robin", "SRT", "Prioridad", "EDF" }));
 
+        btnCambiar.setBackground(new java.awt.Color(102, 102, 255));
         btnCambiar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCambiar.setForeground(new java.awt.Color(204, 204, 204));
         btnCambiar.setText("Cambiar");
         btnCambiar.addActionListener(this::btnCambiarActionPerformed);
 
+        btnInterrupcion.setBackground(new java.awt.Color(102, 102, 255));
         btnInterrupcion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnInterrupcion.setForeground(new java.awt.Color(204, 204, 204));
         btnInterrupcion.setText("Crear Interrupción");
         btnInterrupcion.addActionListener(this::btnInterrupcionActionPerformed);
 
+        tblListos.setBackground(new java.awt.Color(153, 204, 255));
         tblListos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -159,6 +183,7 @@ public class Dashboard extends javax.swing.JFrame {
             tblListos.getColumnModel().getColumn(6).setResizable(false);
         }
 
+        tblTerminados.setBackground(new java.awt.Color(153, 204, 255));
         tblTerminados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -188,6 +213,7 @@ public class Dashboard extends javax.swing.JFrame {
             tblTerminados.getColumnModel().getColumn(6).setResizable(false);
         }
 
+        tblBloqueados.setBackground(new java.awt.Color(153, 204, 255));
         tblBloqueados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -225,14 +251,26 @@ public class Dashboard extends javax.swing.JFrame {
         sldVelocidad.setValue(1000);
         sldVelocidad.addChangeListener(this::sldVelocidadStateChanged);
 
+        jLabel1.setBackground(new java.awt.Color(204, 204, 255));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 102));
         jLabel1.setText("COLA DE TERMINADOS");
+        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLabel1.setOpaque(true);
 
+        jLabel2.setBackground(new java.awt.Color(204, 204, 255));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 102));
         jLabel2.setText("COLA DE LISTOS");
+        jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLabel2.setOpaque(true);
 
+        jLabel3.setBackground(new java.awt.Color(204, 204, 255));
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 102));
         jLabel3.setText("COLA DE BLOQUEADOS");
+        jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLabel3.setOpaque(true);
 
         txtConsola.setBackground(new java.awt.Color(0, 0, 0));
         txtConsola.setColumns(20);
@@ -241,13 +279,19 @@ public class Dashboard extends javax.swing.JFrame {
         txtConsola.setRows(5);
         jScrollPane1.setViewportView(txtConsola);
 
+        lblModo.setBackground(new java.awt.Color(0, 51, 102));
         lblModo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblModo.setForeground(new java.awt.Color(255, 0, 0));
         lblModo.setText("Modo: KERNEL");
+        lblModo.setOpaque(true);
 
+        jLabel4.setBackground(new java.awt.Color(0, 51, 102));
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(204, 204, 204));
         jLabel4.setText("Velocidad");
+        jLabel4.setOpaque(true);
 
+        tblSuspendidos.setBackground(new java.awt.Color(153, 204, 255));
         tblSuspendidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -278,23 +322,37 @@ public class Dashboard extends javax.swing.JFrame {
             tblSuspendidos.getColumnModel().getColumn(6).setResizable(false);
         }
 
+        jLabel5.setBackground(new java.awt.Color(204, 204, 255));
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 102));
         jLabel5.setText("COLA DE SUSPENDIDOS (Disco)");
+        jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLabel5.setOpaque(true);
 
+        btn20Procesos.setBackground(new java.awt.Color(102, 102, 255));
         btn20Procesos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btn20Procesos.setForeground(new java.awt.Color(204, 204, 204));
         btn20Procesos.setText("+ 20 Procesos Aleatorios");
         btn20Procesos.addActionListener(this::btn20ProcesosActionPerformed);
 
+        btnCargarCSV.setBackground(new java.awt.Color(102, 102, 255));
         btnCargarCSV.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCargarCSV.setForeground(new java.awt.Color(204, 204, 204));
         btnCargarCSV.setText("Cargar CSV");
         btnCargarCSV.addActionListener(this::btnCargarCSVActionPerformed);
 
+        btnCargarJSON.setBackground(new java.awt.Color(102, 102, 255));
         btnCargarJSON.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCargarJSON.setForeground(new java.awt.Color(204, 204, 204));
         btnCargarJSON.setText("Cargar JSON");
         btnCargarJSON.addActionListener(this::btnCargarJSONActionPerformed);
 
+        jLabel6.setBackground(new java.awt.Color(204, 204, 255));
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 102));
         jLabel6.setText("LOG DE ESTADOS");
+        jLabel6.setBorder(new javax.swing.border.MatteBorder(null));
+        jLabel6.setOpaque(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -317,8 +375,8 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addGap(36, 36, 36)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
                             .addComponent(sldVelocidad, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))
                         .addComponent(lblAlgoritmoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
